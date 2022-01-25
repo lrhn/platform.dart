@@ -4,10 +4,10 @@
 
 import 'dart:io' as io;
 
-import 'package:platform/platform.dart';
+import 'package:platform/native.dart';
 import 'package:test/test.dart';
 
-void _expectPlatformsEqual(Platform actual, Platform expected) {
+void _expectPlatformsEqual(NativePlatform actual, NativePlatform expected) {
   expect(actual.numberOfProcessors, expected.numberOfProcessors);
   expect(actual.pathSeparator, expected.pathSeparator);
   expect(actual.operatingSystem, expected.operatingSystem);
@@ -24,18 +24,18 @@ void _expectPlatformsEqual(Platform actual, Platform expected) {
 }
 
 void main() {
-  group('FakePlatform', () {
-    late FakePlatform fake;
+  group('FakeNativePlatform', () {
+    late FakeNativePlatform fake;
     late LocalPlatform local;
 
     setUp(() {
-      fake = FakePlatform();
+      fake = FakeNativePlatform();
       local = LocalPlatform();
     });
 
     group('fromPlatform', () {
       setUp(() {
-        fake = FakePlatform.fromPlatform(local);
+        fake = FakeNativePlatform.fromPlatform(local);
       });
 
       test('copiesAllProperties', () {
@@ -58,11 +58,11 @@ void main() {
 
     group('copyWith', () {
       setUp(() {
-        fake = FakePlatform.fromPlatform(local);
+        fake = FakeNativePlatform.fromPlatform(local);
       });
 
       test('overrides a value, but leaves others intact', () {
-        FakePlatform copy = fake.copyWith(
+        NativePlatform copy = fake.copyWith(
           numberOfProcessors: -1,
         );
         expect(copy.numberOfProcessors, equals(-1));
@@ -80,7 +80,7 @@ void main() {
         expect(copy.localeName, local.localeName);
       });
       test('can override all values', () {
-        fake = FakePlatform(
+        fake = FakeNativePlatform(
           numberOfProcessors: 8,
           pathSeparator: ':',
           operatingSystem: 'fake',
@@ -96,7 +96,7 @@ void main() {
           stdoutSupportsAnsi: true,
           localeName: 'local',
         );
-        FakePlatform copy = fake.copyWith(
+        NativePlatform copy = fake.copyWith(
           numberOfProcessors: local.numberOfProcessors,
           pathSeparator: local.pathSeparator,
           operatingSystem: local.operatingSystem,
@@ -120,7 +120,7 @@ void main() {
     group('json', () {
       test('fromJson', () {
         String json = io.File('test/platform.json').readAsStringSync();
-        fake = FakePlatform.fromJson(json);
+        fake = FakeNativePlatform.fromJson(json);
         expect(fake.numberOfProcessors, 8);
         expect(fake.pathSeparator, '/');
         expect(fake.operatingSystem, 'macos');
@@ -140,14 +140,14 @@ void main() {
       });
 
       test('fromJsonToJson', () {
-        fake = FakePlatform.fromJson(local.toJson());
+        fake = FakeNativePlatform.fromJson(local.toJson());
         _expectPlatformsEqual(fake, local);
       });
     });
   });
 
   test('Throws when unset non-null values are read', () {
-    final FakePlatform platform = FakePlatform();
+    final FakeNativePlatform platform = FakeNativePlatform();
 
     expect(() => platform.numberOfProcessors, throwsA(isStateError));
     expect(() => platform.pathSeparator, throwsA(isStateError));
