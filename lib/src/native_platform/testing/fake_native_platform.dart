@@ -4,8 +4,8 @@
 
 import 'dart:convert';
 
-import '../interface/native_platform.dart';
-import 'fake_platform.dart';
+import '../native_platform.dart';
+import '../../cross_platform/testing/fake_platform.dart';
 
 class FakeNativePlatform extends FakePlatform implements NativePlatform {
   /// Creates a new [FakeNativePlatform] with the specified properties.

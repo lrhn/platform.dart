@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:io' as io;
-
 import 'package:platform/native.dart';
 import 'package:test/test.dart';
 
@@ -26,11 +25,11 @@ void _expectPlatformsEqual(NativePlatform actual, NativePlatform expected) {
 void main() {
   group('FakeNativePlatform', () {
     late FakeNativePlatform fake;
-    late LocalPlatform local;
+    late NativePlatform local;
 
     setUp(() {
       fake = FakeNativePlatform();
-      local = LocalPlatform();
+      local = NativePlatform.current;
     });
 
     group('fromPlatform', () {

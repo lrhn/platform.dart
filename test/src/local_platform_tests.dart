@@ -7,7 +7,7 @@ import 'package:platform/native.dart';
 import 'package:test/test.dart';
 
 void main() {
-  var localPlatform = LocalPlatform();
+  var localPlatform = NativePlatform.current;
   test('numberOfProcessors', () {
     expect(localPlatform.numberOfProcessors, io.Platform.numberOfProcessors);
   });

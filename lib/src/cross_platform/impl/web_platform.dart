@@ -7,6 +7,6 @@
 
 import 'dart:html';
 
-const String operatingSystem = "browser";
+const String operatingSystem = 'browser';
 
-final String operatingVersion = window.navigator.userAgent;
+final String operatingSystemVersion = window.navigator.userAgent;

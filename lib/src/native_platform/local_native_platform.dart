@@ -7,9 +7,9 @@ import 'dart:io' as io show Platform, stdin, stdout;
 import 'native_platform.dart';
 
 /// [NativePlatform] implementation that delegates directly to `dart:io`.
-class LocalPlatform extends NativePlatform {
+class LocalNativePlatform extends NativePlatform {
   /// Creates a new [LocalPlatform].
-  const LocalPlatform();
+  const LocalNativePlatform();
 
   @override
   int get numberOfProcessors => io.Platform.numberOfProcessors;

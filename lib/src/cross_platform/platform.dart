@@ -4,11 +4,20 @@
 
 import 'dart:convert';
 
-/// Provides API parity with the `Platform` class in `dart:io`, but using
-/// instance properties rather than static properties. This difference enables
-/// the use of these APIs in tests, where you can provide mock implementations.
+import 'local_platform.dart';
+
+/// Provides access to the operating system information of the current platform.
+///
+/// Works both natively and on the web.
 abstract class Platform {
-  /// Creates a new [Platform].
+  /// The current platform.
+  ///
+  /// An instance of `Platform` which responds with an [operatingSystem]
+  /// and [operatingSystemVersion] corresponding to the run-time platform
+  /// the current program runs on.
+  static const Platform current = LocalPlatform();
+
+  /// Constructor used by subclasses.
   const Platform();
 
   /// A string constant to compare with [operatingSystem] to see if the platform

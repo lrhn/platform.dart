@@ -9,4 +9,4 @@ import 'dart:io';
 
 final String operatingSystem = Platform.operatingSystem;
 
-final String operatingVersion = Platform.operatingSystemVersion;
+final String operatingSystemVersion = Platform.operatingSystemVersion;

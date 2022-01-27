@@ -6,7 +6,7 @@ import 'platform.dart';
 
 import 'impl/no_platform.dart'
     if (dart.library.io) 'impl/io_platform.dart'
-    if (dart.library.html) 'impl/io_platform.dart' as impl;
+    if (dart.library.html) 'impl/web_platform.dart' as impl;
 
 /// [Platform] implementation that reveals the current platform
 class LocalPlatform extends Platform {

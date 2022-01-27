@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import '../interface/platform.dart';
+import '../platform.dart';
 
 /// Provides a mutable implementation of the [Platform] interface.
 class FakePlatform extends Platform {

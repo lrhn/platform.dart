@@ -3,13 +3,23 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:convert';
-import 'platform.dart';
 
+import '../cross_platform/platform.dart';
+import 'local_native_platform.dart';
+
+/// Provides access to the properties of the [Platform] class from `dart:io`.
+///
 /// Provides API parity with the `Platform` class in `dart:io`, but using
 /// instance properties rather than static properties. This difference enables
 /// the use of these APIs in tests, where you can provide mock implementations.
 abstract class NativePlatform extends Platform {
-  /// Creates a new [NativePlatform].
+  /// The current native platform.
+  ///
+  /// An instance of `NativePlatform` which responds with the properties
+  /// avaiable through the `dart:io` library.
+  static const NativePlatform current = LocalNativePlatform();
+
+  /// Constructor used by subclasses.
   const NativePlatform();
 
   /// A string constant to compare with [operatingSystem] to see if the platform
