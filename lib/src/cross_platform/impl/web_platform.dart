@@ -7,6 +7,15 @@
 
 import 'dart:html';
 
-const String operatingSystem = 'browser';
+const String operatingSystem = String.fromEnvironment(
+    'pkg.platform.operatingSystem',
+    defaultValue: 'browser');
 
-final String operatingSystemVersion = window.navigator.userAgent;
+final String operatingSystemVersion =
+    _operatingSystemVersionOverride ?? window.navigator.userAgent;
+
+const String? _operatingSystemVersionOverride =
+    bool.hasEnvironment('pkg.platform.operatingSystemVersion')
+        ? String.fromEnvironment('pkg.platform.operatingSystemVersion',
+            defaultValue: '')
+        : null;

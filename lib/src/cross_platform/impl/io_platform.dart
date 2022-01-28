@@ -7,6 +7,19 @@
 
 import 'dart:io';
 
-final String operatingSystem = Platform.operatingSystem;
+final String operatingSystem =
+    _operatingSystemOverride ?? Platform.operatingSystem;
 
-final String operatingSystemVersion = Platform.operatingSystemVersion;
+final String operatingSystemVersion =
+    _operatingSystemVersionOverride ?? Platform.operatingSystemVersion;
+
+const String? _operatingSystemOverride = bool.hasEnvironment(
+        'pkg.platform.operatingSystem')
+    ? String.fromEnvironment('pkg.platform.operatingSystem', defaultValue: '')
+    : null;
+
+const String? _operatingSystemVersionOverride =
+    bool.hasEnvironment('pkg.platform.operatingSystemVersion')
+        ? String.fromEnvironment('pkg.platform.operatingSystemVersion',
+            defaultValue: '')
+        : null;
