@@ -1,12 +1,11 @@
-// Copyright (c) 2017, the Dart project authors.  Please see the AUTHORS file
+// Copyright (c) 2022, the Dart project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'src/native_platform/local_native_platform.dart' as local;
+// Guarded export of `NativePlatform` implementation, to ensure that there
+// is no class even if the web platform provides a mock `dart:io` library.
 
-/// Native platform specific classes and interfaces.
-export 'src/native_platform/native_platform.dart';
-export 'src/native_platform/testing/fake_native_platform.dart';
-
-@Deprecated('Use NativePlatform.current instead')
-typedef LocalNativePlatform = local.LocalNativePlatform;
+export 'src/native_platform/native_platform_guarded.dart'
+    if (dart.library.io ==
+        "false") 'src/native_platform/no_native_platform.dart'
+    if (dart.library.io == "") 'src/native_platform/no_native_platform.dart';
