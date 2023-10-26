@@ -6,7 +6,7 @@ version 4.x.
 
 ## From `package:platform` version 3.x
 
-### General platform getters
+### General platform APIs
 
 The general APIs in `package:platform` v3.x, that determine what the host
 platform is, rely on instantiating an instance of the `LocalPlatform` class. In
@@ -55,7 +55,7 @@ recommend migration to `package:platform` version 4.x, as the APIs in
 `package:platform/platform.dart` are available on all platforms. For the
 additional native-only APIs, those available in `package:platform/native.dart`.
 
-### General platform getters
+### General platform APIs
 
 The general APIs in `dart:io` that determine what the host platform are accessed
 via static methods on the `Platform` class. To migrate to `package:platform`
@@ -66,7 +66,7 @@ Migrate from:
 ```dart
 import 'dart:io';
 
-bool onAndroid = Platform.isMacOS;
+bool onAndroid = Platform.isAndroid;
 ```
 
 To:
@@ -96,3 +96,24 @@ import 'package:platform/native.dart'; // version 4.x
 String hostName = NativePlatform.current.localHostname;
 ```
 
+## From package:os_detect
+
+## General platform APIs
+
+Migrate from:
+```dart
+import 'package:os_detect/os_detect.dart' as Platform;
+
+bool onAndroid = Platform.isAndroid;
+```
+
+To:
+```dart
+import 'package:platform/platform.dart'; // version 4.x
+
+bool onAndroid = Platform.current.isAndroid;
+```
+
+### Native-only 
+
+`package:os_detect` has no native-only APIs.
