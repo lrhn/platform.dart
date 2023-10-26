@@ -86,7 +86,7 @@ Migrate from:
 ```dart
 import 'dart:io';
 
-String hostname = hostname = Platform.localHostname;
+String hostname = Platform.localHostname;
 ```
 
 To:
