@@ -22,15 +22,15 @@ bool onAndroid = LocalPlatform().isAndroid;
 
 To:
 ```dart
-import 'package:platform/platform.dart'; // version 4.x
+import 'package:platform/host.dart';     // version 4.x
 
-bool onAndroid = Platform.current.isAndroid;
+bool onAndroid = HostPlatform.current.isAndroid;
 ```
 
 ### Native-only 
 
-APIs in `package:platform` which are available only on native platforms (and not e.g.
-on the web) have been moved to a separate library,
+APIs in `package:platform` which are available only on native platforms (and not,
+for example, on the web) have been moved to a separate library,
 `package:platform/native.dart`.
 
 Migrate from:
@@ -49,18 +49,20 @@ String hostName = NativePlatform.current.localHostname;
 
 ## From `dart:io`
 
-The `dart:io` core library is a special custom library only available on Dart
-native platforms (and for example, not available on Dart web platforms). We
-recommend migration to `package:platform` version 4.x, as the APIs in
-`package:platform/platform.dart` are available on all platforms. For the
+The `dart:io` core library is only available on Dart native platforms 
+(and, for example, not available on Dart web platforms). 
+We recommend migration to `package:platform` version 4.x, as the APIs in
+`package:platform/platform.dart` are available on all current platforms. For the
 additional native-only APIs, those available in `package:platform/native.dart`.
 
 ### General platform APIs
 
-The general APIs in `dart:io` that determine what the host platform are accessed
-via static methods on the `Platform` class. To migrate to `package:platform`
-v4.x, use the similar methods on instance returned via the
-`LocalPlatform.current` getter.
+The `dart:io` library exposes host platform information as static members of the
+`Platform` class. This API has historically been made available on some
+platforms that don't otherwise support `dart:io`.
+
+To migrate uses of that API to `package:platform` v4.x, use the similarly-named
+members on the `LocalPlatform.current` object.
 
 Migrate from:
 ```dart
@@ -71,12 +73,17 @@ bool onAndroid = Platform.isAndroid;
 
 To:
 ```dart
-import 'package:platform/platform.dart'; // version 4.x
+import 'package:platform/host.dart';     // version 4.x
 
-bool onAndroid = Platform.current.isAndroid;
+bool onAndroid = HostPlatform.current.isAndroid;
 ```
 
 ### Native-only 
+
+The remaining `dart:io` APIs on the `Platform` class, have never worked on
+non-native platforms. To migrate uses of those to `package:platform` v4.x, use
+the similarly named members of the `NativePlatform.current` object from the
+`package:platform/native.dart`.
 
 The native APIs in `dart:io` are accessed via static methods on the `Platform`
 class. To migrate to `package:platform` v4.x, use the similar methods on
@@ -109,9 +116,9 @@ bool onAndroid = Platform.isAndroid;
 
 To:
 ```dart
-import 'package:platform/platform.dart'; // version 4.x
+import 'package:platform/host.dart';     // version 4.x
 
-bool onAndroid = Platform.current.isAndroid;
+bool onAndroid = HostPlatform.current.isAndroid;
 ```
 
 ### Native-only 
