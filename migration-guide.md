@@ -62,7 +62,7 @@ The `dart:io` library exposes host platform information as static members of the
 platforms that don't otherwise support `dart:io`.
 
 To migrate uses of that API to `package:platform` v4.x, use the similarly-named
-members on the `LocalPlatform.current` object.
+members on the `HostPlatform.current` object.
 
 Migrate from:
 ```dart
