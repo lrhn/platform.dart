@@ -1,8 +1,11 @@
 # Migration guide
 
-This migration guide details how to migrate from from earlier Dart platform APIs
-in `package:platform` version 3.x to, and in `dart:io`, to `package:platform`
-version 4.x.
+This migration guide details how to migrate to `package:platform` version 4.x,
+from earlier Dart platform APIs located in:
+
+  - `dart:io`
+  - `package:platform` version 3.x
+  - `package:os_detect`
 
 ## From `package:platform` version 3.x
 
