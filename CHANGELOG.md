@@ -1,3 +1,10 @@
+### 4.0.0
+
+* New API split into OS-detection, which works cross-platform,
+  and accessing `dart:io` through a mockable abstraction, which still only
+  works when compiled to native.
+  Retains a minimal backwards compatible API, which will be deprecated soon.
+
 ### 3.1.0
 
 * Removed `Platform.packageRoot`, which was already marked deprecated, and which
