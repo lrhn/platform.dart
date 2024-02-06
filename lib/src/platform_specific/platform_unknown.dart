@@ -14,4 +14,4 @@ import '../json_keys.dart';
 
 part '../platform_apis.dart';
 
-const Platform _currentPlatform = Platform.unknown();
+const Platform _currentPlatform = Platform._unknown();

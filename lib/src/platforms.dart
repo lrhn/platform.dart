@@ -19,4 +19,5 @@ export 'platform_specific/platform_unknown.dart'
         FakeWasmPlatform,
         NativePlatform,
         Platform,
+        PlatformIsOS,
         WasmPlatform;

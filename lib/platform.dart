@@ -14,4 +14,4 @@
 library;
 
 export 'src/platforms.dart'
-    show Platform, NativePlatform, BrowserPlatform, WasmPlatform;
+    show Platform, PlatformIsOS, NativePlatform, BrowserPlatform, WasmPlatform;

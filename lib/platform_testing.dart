@@ -22,12 +22,4 @@
 /// be retained than necessary.
 library;
 
-export 'src/platforms.dart'
-    show
-        BrowserPlatform,
-        FakeBrowserPlatform,
-        FakeNativePlatform,
-        FakeWasmPlatform,
-        NativePlatform,
-        Platform,
-        WasmPlatform;
+export 'src/platforms.dart';

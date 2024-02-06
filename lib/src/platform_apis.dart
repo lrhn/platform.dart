@@ -13,12 +13,27 @@ bool _platformOverrideUsed = false;
 /// Key used in Zone environment to override the current platform.
 const _platformOverrideKey = #_currentPlatformOverride;
 
+/// Dart runtime platform information.
+///
+/// Provides information about the current runtime environment.
+///
+/// If running as native code, the [nativePlatform] object is
+/// non-`null` and provides information about that platform,
+/// including the [NativePlatform.operatingSystem] name.
+///
+/// If running in a browser, the [browserPlatform] objects is
+/// non-`null` and provides information about the browser.
+///
+/// If running in a WebAssembly (Wasm) runtime, the [wasmPlatform] is
+/// non-`null` and may one day provide information about the Wasm runtime.
 final class Platform {
+  /// The current [Platform] information of the running program.
   static Platform get current => !_platformOverrideUsed
       ? _currentPlatform // Is declared in the main library files.
       : ((Zone.current[_platformOverrideKey] as Platform?) ?? _currentPlatform);
 
   /// The current native platform, if running on a native platform.
+  @pragma('vm:platform_const')
   final NativePlatform? nativePlatform;
 
   /// The current browser platform, if running on a browser platform.
@@ -28,6 +43,7 @@ final class Platform {
   final WasmPlatform? wasmPlatform;
 
   /// Whether currently running on a native platform.
+  @pragma('vm:platform_const')
   bool get isNative => nativePlatform != null;
 
   /// Whether currently running in a browser.
@@ -47,10 +63,36 @@ final class Platform {
         browserPlatform = null;
 
   /// A platform with *none* of the native, browser or Wasm platforms set.
-  const Platform.unknown()
+  const Platform._unknown()
       : nativePlatform = null,
         browserPlatform = null,
         wasmPlatform = null;
+}
+
+extension PlatformIsOS on Platform {
+  /// Whether this is a [nativePlatform] on [Android](NativePlatform.isAndroid).
+  @pragma('vm:platform_const')
+  bool get isAndroid => nativePlatform?.isAndroid ?? false;
+
+  /// Whether this is a [nativePlatform] on [Fuchsia](NativePlatform.isFuchsia).
+  @pragma('vm:platform_const')
+  bool get isFuchsia => nativePlatform?.isFuchsia ?? false;
+
+  /// Whether this is a [nativePlatform] on [iOS](NativePlatform.isIOS).
+  @pragma('vm:platform_const')
+  bool get isIOS => nativePlatform?.isIOS ?? false;
+
+  /// Whether this is a [nativePlatform] on [Linux](NativePlatform.isLinux).
+  @pragma('vm:platform_const')
+  bool get isLinux => nativePlatform?.isLinux ?? false;
+
+  /// Whether this is a [nativePlatform] on [MacOS](NativePlatform.isMacOS).
+  @pragma('vm:platform_const')
+  bool get isMacOS => nativePlatform?.isMacOS ?? false;
+
+  /// Whether this is a [nativePlatform] on [Windows](NativePlatform.isWindows).
+  @pragma('vm:platform_const')
+  bool get isWindows => nativePlatform?.isWindows ?? false;
 }
 
 /// Properties of the current Wasm runtime environment.
@@ -712,7 +754,7 @@ final class FakeNativePlatform extends NativePlatform {
 
   @override
   List<String> get executableArguments => _throwIfUnset<List<String>>(
-          _executableArguments, _className, JsonKey.executableArguments);
+      _executableArguments, _className, JsonKey.executableArguments);
 
   @override
   String get lineTerminator =>
