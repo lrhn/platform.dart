@@ -4,13 +4,13 @@
 
 // Compile this file for a specific platform, for example as:
 //
-//    dart compile exe --target-os=linux tree_shake.dart
-//    dart compile js -o tree_shake.js tree_shake.dart
+//    dart compile exe --target-os=linux tree_shake_shorthand.dart
+//    dart compile js -o tree_shake_shorthand.js tree_shake_shorthand.dart
 //
 // and check that the executable does not contain the strings for
 // other platforms. For example on Linux, use:
 //
-//     strings tree_shake.{exe,js} | grep "RUNNING"
+//     strings tree_shake_shorthand.{exe,js} | grep "RUNNING"
 //
 // and check that the only retained value is either `RUNNING ON LINUX` or
 //`RUNNING IN A BROWSER`.
@@ -21,14 +21,11 @@ import 'package:platform/platform.dart';
 void main() {
   if (Platform.current.isBrowser) {
     print('RUNNING IN A BROWSER');
-  } else if (Platform.current.isNative) {
-    var native = Platform.current.nativePlatform!;
-    if (native.isLinux) {
-      print('RUNNING ON LINUX');
-    } else if (native.isMacOS) {
-      print('RUNNING ON MACOS');
-    } else if (native.isWindows) {
-      print('RUNNING ON WINDOWS');
-    }
+  } else if (Platform.current.isLinux) {
+    print('RUNNING ON LINUX');
+  } else if (Platform.current.isMacOS) {
+    print('RUNNING ON MACOS');
+  } else if (Platform.current.isWindows) {
+    print('RUNNING ON WINDOWS');
   }
 }

@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Constants for the compilation environment keys for overrides.
+///
+/// Only used on native platforms.
 library;
 
 /// Compilation environment key for overriding the operating system string

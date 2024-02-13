@@ -2,13 +2,21 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Compile this file for a specific platform, for example as:
+//
+//    dart compile exe --target-os=linux tree_shake_pattern_when.dart
+//    dart compile js -o tree_shake_pattern_when.js tree_shake_pattern_when.dart
+//
+// and check that the executable does not contain the strings for
+// other platforms. For example on Linux, use:
+//
+//     strings tree_shake_pattern_when.{exe,js} | grep "RUNNING"
+//
+// and check that the only retained value is either `RUNNING ON LINUX` or
+//`RUNNING IN A BROWSER`.library;
+
 import 'package:platform/platform.dart';
 
-// Compile this for a specific platform, and check that the executable
-// does not contain the strings for other platforms.
-// (On Unix, use `string tree_shake_patterns.exe | grep "RUNNING ON"`.)
-//
-// Current optimizations do *not* allow tree-shaking based on patterns.
 void main() {
   switch (Platform.current) {
     case Platform(:var browserPlatform?):

@@ -21,14 +21,11 @@ import 'package:platform/platform.dart';
 void main() {
   if (Platform.current.isBrowser) {
     print('RUNNING IN A BROWSER');
-  } else if (Platform.current.isNative) {
-    var native = Platform.current.nativePlatform!;
-    if (native.isLinux) {
-      print('RUNNING ON LINUX');
-    } else if (native.isMacOS) {
-      print('RUNNING ON MACOS');
-    } else if (native.isWindows) {
-      print('RUNNING ON WINDOWS');
-    }
+  } else if (Platform.current.nativePlatform?.isLinux ?? false) {
+    print('RUNNING ON LINUX');
+  } else if (Platform.current.nativePlatform?.isMacOS ?? false) {
+    print('RUNNING ON MACOS');
+  } else if (Platform.current.nativePlatform?.isWindows ?? false) {
+    print('RUNNING ON WINDOWS');
   }
 }
