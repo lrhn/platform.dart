@@ -33,7 +33,6 @@ final class Platform {
       : ((Zone.current[_platformOverrideKey] as Platform?) ?? _currentPlatform);
 
   /// The current native platform, if running on a native platform.
-  @pragma('vm:platform_const')
   final NativePlatform? nativePlatform;
 
   /// The current browser platform, if running on a browser platform.
@@ -43,7 +42,7 @@ final class Platform {
   final WasmPlatform? wasmPlatform;
 
   /// Whether currently running on a native platform.
-  @pragma('vm:platform_const')
+  @pragma('vm:prefer-inline')
   bool get isNative => nativePlatform != null;
 
   /// Whether currently running in a browser.
@@ -74,29 +73,30 @@ final class Platform {
 /// Extension getters on `Platform` which forward to the operating system
 /// checks on [Platform.nativePlatform], after checking that this is a native
 /// platform.
+// TODO: Do not work with tree-shaking.
 extension PlatformIsOS on Platform {
   /// Whether this is a [nativePlatform] on [Android](NativePlatform.isAndroid).
-  @pragma('vm:prefer_inline')
+  @pragma('vm:prefer-inline')
   bool get isAndroid => nativePlatform?.isAndroid ?? false;
 
   /// Whether this is a [nativePlatform] on [Fuchsia](NativePlatform.isFuchsia).
-  @pragma('vm:prefer_inline')
+  @pragma('vm:prefer-inline')
   bool get isFuchsia => nativePlatform?.isFuchsia ?? false;
 
   /// Whether this is a [nativePlatform] on [iOS](NativePlatform.isIOS).
-  @pragma('vm:prefer_inline')
+  @pragma('vm:prefer-inline')
   bool get isIOS => nativePlatform?.isIOS ?? false;
 
   /// Whether this is a [nativePlatform] on [Linux](NativePlatform.isLinux).
-  @pragma('vm:prefer_inline')
+  @pragma('vm:prefer-inline')
   bool get isLinux => nativePlatform?.isLinux ?? false;
 
   /// Whether this is a [nativePlatform] on [MacOS](NativePlatform.isMacOS).
-  @pragma('vm:prefer_inline')
+  @pragma('vm:prefer-inline')
   bool get isMacOS => nativePlatform?.isMacOS ?? false;
 
   /// Whether this is a [nativePlatform] on [Windows](NativePlatform.isWindows).
-  @pragma('vm:prefer_inline')
+  @pragma('vm:prefer-inline')
   bool get isWindows => nativePlatform?.isWindows ?? false;
 }
 
@@ -386,22 +386,22 @@ abstract final class NativePlatform {
   ];
 
   /// Whether the operating system is Android.
-  bool get isAndroid => operatingSystem == NativePlatform.android;
+  bool get isAndroid;
 
   /// Whether the operating system is Fuchsia.
-  bool get isFuchsia => operatingSystem == NativePlatform.fuchsia;
+  bool get isFuchsia;
 
   /// Whether the operating system is iOS.
-  bool get isIOS => operatingSystem == NativePlatform.iOS;
+  bool get isIOS;
 
   /// Whether the operating system is Linux.
-  bool get isLinux => operatingSystem == NativePlatform.linux;
+  bool get isLinux;
 
   /// Whether the operating system is OS X.
-  bool get isMacOS => operatingSystem == NativePlatform.macOS;
+  bool get isMacOS;
 
   /// Whether the operating system is Windows.
-  bool get isWindows => operatingSystem == NativePlatform.windows;
+  bool get isWindows;
 
   /// A string representing the operating system.
   ///
@@ -447,7 +447,6 @@ abstract final class NativePlatform {
   /// Is a line feed (`"\n"`, U+000A) on most platforms, but
   /// carriage return followed by linefeed (`"\r\n"`, U+000D + U+000A)
   /// on Windows.
-  @pragma('vm:platform_const')
   String get lineTerminator;
 
   /// Get the name of the current locale.
@@ -468,7 +467,6 @@ abstract final class NativePlatform {
 
   /// The path separator used by the operating system to separate
   /// components in file paths.
-  @pragma('vm:platform_const')
   String get pathSeparator;
 
   /// The path of the executable used to run the script in this
@@ -740,6 +738,31 @@ final class FakeNativePlatform extends NativePlatform {
               stdoutSupportsAnsi: platform.stdoutSupportsAnsi,
               version: platform.version,
             );
+
+  /// Whether the operating system is Android.
+  @override
+  bool get isAndroid => operatingSystem == NativePlatform.android;
+
+  /// Whether the operating system is Fuchsia.
+  @override
+  bool get isFuchsia => operatingSystem == NativePlatform.fuchsia;
+
+  /// Whether the operating system is iOS.
+  @override
+  bool get isIOS => operatingSystem == NativePlatform.iOS;
+
+  /// Whether the operating system is Linux.
+  @override
+  bool get isLinux => operatingSystem == NativePlatform.linux;
+
+  /// Whether the operating system is OS X.
+  @override
+  bool get isMacOS => operatingSystem == NativePlatform.macOS;
+
+  /// Whether the operating system is Windows.
+  @override
+  bool get isWindows => operatingSystem == NativePlatform.windows;
+
 
   @override
   String get operatingSystem =>

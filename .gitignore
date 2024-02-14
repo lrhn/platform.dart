@@ -4,6 +4,7 @@
 .dart_tool/
 .pub/
 build/
+doc/
 packages
 .packages
 

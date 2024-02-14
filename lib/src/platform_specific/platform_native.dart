@@ -43,76 +43,91 @@ const NativePlatform $nativePlatform = _NativePlatform();
 final class _NativePlatform extends NativePlatform {
   const _NativePlatform() : super._();
 
+  @pragma('vm:prefer-inline')
   @override
-  @pragma('vm:platform_const')
   bool get isAndroid => _operatingSystem == NativePlatform.android;
 
+  @pragma('vm:prefer-inline')
   @override
-  @pragma('vm:platform_const')
   bool get isFuchsia => _operatingSystem == NativePlatform.fuchsia;
 
+  @pragma('vm:prefer-inline')
   @override
-  @pragma('vm:platform_const')
   bool get isIOS => _operatingSystem == NativePlatform.iOS;
 
+  @pragma('vm:prefer-inline')
   @override
-  @pragma('vm:platform_const')
   bool get isLinux => _operatingSystem == NativePlatform.linux;
 
+  @pragma('vm:prefer-inline')
   @override
-  @pragma('vm:platform_const')
   bool get isMacOS => _operatingSystem == NativePlatform.macOS;
 
+  @pragma('vm:prefer-inline')
   @override
-  @pragma('vm:platform_const')
   bool get isWindows => _operatingSystem == NativePlatform.windows;
 
+  @pragma('vm:prefer-inline')
   @override
-  @pragma('vm:platform_const')
   String get operatingSystem => _operatingSystem;
 
+  @pragma('vm:prefer-inline')
   @override
   String get operatingSystemVersion => _operatingSystemVersion;
 
+  @pragma('vm:prefer-inline')
   @override
   Map<String, String> get environment => io.Platform.environment;
 
+  @pragma('vm:prefer-inline')
   @override
   String get executable => io.Platform.executable;
 
+  @pragma('vm:prefer-inline')
   @override
   List<String> get executableArguments => io.Platform.executableArguments;
 
+  @pragma('vm:prefer-inline')
   @override
   String get lineTerminator => io.Platform.lineTerminator;
 
+  @pragma('vm:prefer-inline')
   @override
   String get localHostname => io.Platform.localHostname;
 
+  @pragma('vm:prefer-inline')
   @override
   String get localeName => io.Platform.localeName;
 
+  @pragma('vm:prefer-inline')
   @override
   int get numberOfProcessors => io.Platform.numberOfProcessors;
 
+  @pragma('vm:prefer-inline')
   @override
   String? get packageConfig => io.Platform.packageConfig;
 
+  @pragma('vm:prefer-inline')
   @override
   String get pathSeparator => io.Platform.pathSeparator;
 
+  @pragma('vm:prefer-inline')
   @override
   String get resolvedExecutable => io.Platform.resolvedExecutable;
 
+  @pragma('vm:prefer-inline')
   @override
   Uri get script => io.Platform.script;
 
+  @pragma('vm:prefer-inline')
   @override
   bool get stdinSupportsAnsi => io.stdin.supportsAnsiEscapes;
 
+  @pragma('vm:prefer-inline')
   @override
   bool get stdoutSupportsAnsi => io.stdout.supportsAnsiEscapes;
 
+  @pragma('vm:prefer-inline')
   @override
   String get version => io.Platform.version;
 }

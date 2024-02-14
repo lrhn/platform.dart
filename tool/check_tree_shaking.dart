@@ -24,6 +24,7 @@
 // which is why it must be invoked with that compiler.)
 library;
 
+import 'dart:convert';
 import 'dart:io';
 
 void main(List<String> args) {
@@ -101,7 +102,11 @@ void main(List<String> args) {
       var exampleName = clipEnd(uri.pathSegments.last, '.dart');
       var exeOutput =
           '${outputDir.path}${Platform.pathSeparator}$exampleName.exe';
-      Process.runSync(dartExe.path, [
+      var result = Process.runSync(
+          dartExe.path,
+          stdoutEncoding: utf8,
+          stderrEncoding: utf8,
+          [
         'compile',
         'exe',
         '--target-os',
@@ -110,6 +115,11 @@ void main(List<String> args) {
         exeOutput,
         example.path,
       ]);
+      if (!_checkCompiled(example, File(exeOutput), verbose)) {
+        print("STDOUT:\n ${result.stdout}\nSTDERR:\n${result.stderr}");
+        continue;
+      }
+
       var exampleExe = '$exampleName.exe';
       if (!check(exeOutput, exampleExe)) {
         failures.add(exampleExe);
@@ -117,13 +127,21 @@ void main(List<String> args) {
 
       var jsOutput =
           '${outputDir.path}${Platform.pathSeparator}$exampleName.js';
-      Process.runSync(dartExe.path, [
+      result = Process.runSync(
+          dartExe.path,
+          stdoutEncoding: utf8,
+          stderrEncoding: utf8,
+          [
         'compile',
         'js',
         '-o',
         jsOutput,
         example.path,
       ]);
+      if (!_checkCompiled(example, File(jsOutput), verbose)) {
+        print("STDOUT:\n ${result.stdout}\nSTDERR:\n${result.stderr}");
+        continue;
+      }
       var exampleJS = '$exampleName.js';
       if (!check(jsOutput, exampleJS)) {
         failures.add(exampleJS);
@@ -184,4 +202,16 @@ bool check(String path, String name) {
 String clipEnd(String text, String end) {
   if (text.endsWith(end)) return text.substring(0, text.length - end.length);
   return text;
+}
+
+bool _checkCompiled(File source, File output, bool verbose) {
+  if (output.existsSync()) {
+    if (verbose) {
+      var stat = output.statSync();
+      print("Compiled: ${source.path} to ${output.path}: ${stat.size} bytes");
+    }
+    return true;
+  }
+  print("FILE NOT COMPILED: ${source.path} to ${output.path}");
+  return false;
 }
