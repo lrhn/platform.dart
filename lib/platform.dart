@@ -2,7 +2,16 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// Core interfaces & classes.
-export 'src/interface/local_platform.dart';
-export 'src/interface/platform.dart';
-export 'src/testing/fake_platform.dart';
+/// Properties of the current platform.
+///
+/// The [Platform.current] object represents the current runtime platform
+/// by having one of [Platform.nativePlatform], [Platform.browserPlatform]
+/// or [Platform.wasmPlatform] being non-`null`, depending on the runtime
+/// system the current program is running on.
+///
+/// That value can the provide more information about the current native,
+/// browser or Wasm platform.
+library;
+
+export 'src/platforms.dart'
+    show Platform, PlatformIsOS, NativePlatform, BrowserPlatform, WasmPlatform;
