@@ -3,11 +3,15 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Legacy API adapter. Only works on native platforms.
+@visibleForTesting
 library;
 
 import 'package:meta/meta.dart' show visibleForTesting;
 
-import 'src/platform_specific/platform_native.dart' as p;
+import 'src/platform_specific/platforms_test_base.dart' as p
+    show NativePlatform, Platform, nativePlatformInstance;
+// ignore: invalid_use_of_visible_for_testing_member
+import 'src/fake_platforms.dart' as p show FakeNativePlatform;
 
 extension type Platform._(p.NativePlatform _) implements p.NativePlatform {
   static const String android = p.NativePlatform.android;
@@ -24,9 +28,11 @@ extension type Platform._(p.NativePlatform _) implements p.NativePlatform {
       LocalPlatform._(p.Platform.current.nativePlatform!);
 }
 
+const p.NativePlatform? _nativePlatform = p.nativePlatformInstance;
+
 extension type const LocalPlatform._(p.NativePlatform _)
     implements p.NativePlatform, Platform {
-  const LocalPlatform() : this._(p.$nativePlatform);
+  const LocalPlatform() : this._(_nativePlatform as p.NativePlatform);
 
   bool get isBrowser => false;
 }
@@ -39,7 +45,10 @@ extension type const LocalPlatform._(p.NativePlatform _)
 // ignore: invalid_use_of_visible_for_testing_member
 extension type const FakePlatform._(p.FakeNativePlatform _)
     // ignore: invalid_use_of_visible_for_testing_member
-    implements p.FakeNativePlatform, Platform {
+    implements
+        // ignore: invalid_use_of_visible_for_testing_member
+        p.FakeNativePlatform,
+        Platform {
   FakePlatform({
     Map<String, String>? environment,
     String? executable,

@@ -8,7 +8,7 @@ library;
 import 'dart:convert' show jsonDecode, jsonEncode;
 
 import 'package:platform/platform_testing.dart';
-import 'package:platform/src/json_keys.dart';
+import 'package:platform/src/json_keys.dart' as json_key;
 import 'package:test/test.dart';
 
 void main() {
@@ -41,18 +41,18 @@ void main() {
         BrowserPlatform copy = fake.copyWith(
           version: "42.0",
         );
-        expected[JsonKey.version] = "42.0";
+        expected[json_key.version] = "42.0";
         testBrowserFake(copy, expected);
       });
       test('can override all values', () {
         var fake = FakeBrowserPlatform.fromPlatform(original);
         var expected = <String, Object?>{
-          JsonKey.userAgent: fakeUA,
-          JsonKey.version: fakeVersion,
+          json_key.userAgent: fakeUA,
+          json_key.version: fakeVersion,
         };
         var copy = fake.copyWith(
-          userAgent: expected[JsonKey.userAgent] as String?,
-          version: expected[JsonKey.version] as String?,
+          userAgent: expected[json_key.userAgent] as String?,
+          version: expected[json_key.version] as String?,
         );
         testBrowserFake(copy, expected);
       });
@@ -61,8 +61,8 @@ void main() {
     group('json', () {
       test('fromJson', () {
         var json = <String, Object?>{
-          JsonKey.userAgent: fakeUA,
-          JsonKey.version: fakeVersion,
+          json_key.userAgent: fakeUA,
+          json_key.version: fakeVersion,
         };
         var jsonText = jsonEncode(json);
         var fake = FakeBrowserPlatform.fromJson(jsonText);
@@ -79,8 +79,8 @@ void main() {
       test('fromNullJson', () {
         // Explicit null values are allowed in the JSON, treated as unset value.
         var allNulls = <String, Object?>{
-          JsonKey.userAgent: null,
-          JsonKey.version: null,
+          json_key.userAgent: null,
+          json_key.version: null,
         };
         var fake = FakeBrowserPlatform.fromJson(jsonEncode(allNulls));
         testBrowserFake(fake, {});
@@ -111,8 +111,8 @@ void main() {
 
         // These properties must be strings or null.
         for (var name in [
-          JsonKey.userAgent,
-          JsonKey.version,
+          json_key.userAgent,
+          json_key.version,
         ]) {
           fromJsonError('{"$name": 42}');
           fromJsonError('{"$name": ["not a string"]}');
@@ -248,6 +248,6 @@ void _testProperty(Object? Function() read, Object? expected) {
 /// for the expected operating system.
 void testBrowserFake(
     BrowserPlatform actual, Map<String, Object?> expectedValues) {
-  _testProperty(() => actual.userAgent, expectedValues[JsonKey.userAgent]);
-  _testProperty(() => actual.version, expectedValues[JsonKey.version]);
+  _testProperty(() => actual.userAgent, expectedValues[json_key.userAgent]);
+  _testProperty(() => actual.version, expectedValues[json_key.version]);
 }

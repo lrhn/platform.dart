@@ -8,7 +8,7 @@ library;
 import 'dart:convert' show jsonDecode, jsonEncode;
 
 import 'package:platform/platform_testing.dart';
-import 'package:platform/src/json_keys.dart';
+import 'package:platform/src/json_keys.dart' as json_key;
 import 'package:test/test.dart';
 
 void main() {
@@ -59,48 +59,48 @@ void main() {
         NativePlatform copy = fake.copyWith(
           numberOfProcessors: -1,
         );
-        expected[JsonKey.numberOfProcessors] = -1;
+        expected[json_key.numberOfProcessors] = -1;
         testNativeFake(copy, expected);
       });
       test('can override all values', () {
         var fake = FakeNativePlatform.fromPlatform(original);
         var expected = <String, Object?>{
-          JsonKey.environment: <String, String>{'PATH': '.'},
-          JsonKey.executable: 'executable',
-          JsonKey.executableArguments: <String>['script-arg'],
-          JsonKey.lineTerminator: '\r',
-          JsonKey.localeName: 'local',
-          JsonKey.localHostname: 'host',
-          JsonKey.numberOfProcessors: 8,
-          JsonKey.operatingSystem: otherOS,
-          JsonKey.operatingSystemVersion: '0.1.0',
-          JsonKey.pathSeparator: ':',
-          JsonKey.packageConfig: 'config.json',
-          JsonKey.resolvedExecutable: '/executable',
-          JsonKey.script: '/platform/test/fake_platform_test.dart',
-          JsonKey.stdinSupportsAnsi: false,
-          JsonKey.stdoutSupportsAnsi: true,
-          JsonKey.version: '0.1.1',
+          json_key.environment: <String, String>{'PATH': '.'},
+          json_key.executable: 'executable',
+          json_key.executableArguments: <String>['script-arg'],
+          json_key.lineTerminator: '\r',
+          json_key.localeName: 'local',
+          json_key.localHostname: 'host',
+          json_key.numberOfProcessors: 8,
+          json_key.operatingSystem: otherOS,
+          json_key.operatingSystemVersion: '0.1.0',
+          json_key.pathSeparator: ':',
+          json_key.packageConfig: 'config.json',
+          json_key.resolvedExecutable: '/executable',
+          json_key.script: '/platform/test/fake_platform_test.dart',
+          json_key.stdinSupportsAnsi: false,
+          json_key.stdoutSupportsAnsi: true,
+          json_key.version: '0.1.1',
         };
         var copy = fake.copyWith(
-          environment: expected[JsonKey.environment] as Map<String, String>,
-          executable: expected[JsonKey.executable] as String,
+          environment: expected[json_key.environment] as Map<String, String>,
+          executable: expected[json_key.executable] as String,
           executableArguments:
-              expected[JsonKey.executableArguments] as List<String>,
-          lineTerminator: expected[JsonKey.lineTerminator] as String,
-          localeName: expected[JsonKey.localeName] as String,
-          localHostname: expected[JsonKey.localHostname] as String,
-          numberOfProcessors: expected[JsonKey.numberOfProcessors] as int,
-          operatingSystem: expected[JsonKey.operatingSystem] as String,
+              expected[json_key.executableArguments] as List<String>,
+          lineTerminator: expected[json_key.lineTerminator] as String,
+          localeName: expected[json_key.localeName] as String,
+          localHostname: expected[json_key.localHostname] as String,
+          numberOfProcessors: expected[json_key.numberOfProcessors] as int,
+          operatingSystem: expected[json_key.operatingSystem] as String,
           operatingSystemVersion:
-              expected[JsonKey.operatingSystemVersion] as String,
-          packageConfig: expected[JsonKey.packageConfig] as String?,
-          pathSeparator: expected[JsonKey.pathSeparator] as String,
-          script: Uri.parse(expected[JsonKey.script] as String),
-          resolvedExecutable: expected[JsonKey.resolvedExecutable] as String,
-          stdinSupportsAnsi: expected[JsonKey.stdinSupportsAnsi] as bool,
-          stdoutSupportsAnsi: expected[JsonKey.stdoutSupportsAnsi] as bool,
-          version: expected[JsonKey.version] as String,
+              expected[json_key.operatingSystemVersion] as String,
+          packageConfig: expected[json_key.packageConfig] as String?,
+          pathSeparator: expected[json_key.pathSeparator] as String,
+          script: Uri.parse(expected[json_key.script] as String),
+          resolvedExecutable: expected[json_key.resolvedExecutable] as String,
+          stdinSupportsAnsi: expected[json_key.stdinSupportsAnsi] as bool,
+          stdoutSupportsAnsi: expected[json_key.stdoutSupportsAnsi] as bool,
+          version: expected[json_key.version] as String,
         );
         testNativeFake(copy, expected);
       });
@@ -109,22 +109,22 @@ void main() {
     group('json', () {
       test('fromJson', () {
         var json = <String, Object?>{
-          JsonKey.environment: {'PATH': '/bin', 'PWD': '/platform'},
-          JsonKey.executable: '/bin/dart',
-          JsonKey.executableArguments: ['--checked'],
-          JsonKey.lineTerminator: '\r',
-          JsonKey.localeName: 'de/de',
-          JsonKey.localHostname: 'platform.test.org',
-          JsonKey.numberOfProcessors: 8,
-          JsonKey.operatingSystem: 'macos',
-          JsonKey.operatingSystemVersion: '10.14.5',
-          JsonKey.packageConfig: 'config.json',
-          JsonKey.pathSeparator: '/',
-          JsonKey.resolvedExecutable: '/bin/dart',
-          JsonKey.script: 'file:///platform/test/fake_platform_test.dart',
-          JsonKey.stdinSupportsAnsi: true,
-          JsonKey.stdoutSupportsAnsi: false,
-          JsonKey.version: '1.22.0'
+          json_key.environment: {'PATH': '/bin', 'PWD': '/platform'},
+          json_key.executable: '/bin/dart',
+          json_key.executableArguments: ['--checked'],
+          json_key.lineTerminator: '\r',
+          json_key.localeName: 'de/de',
+          json_key.localHostname: 'platform.test.org',
+          json_key.numberOfProcessors: 8,
+          json_key.operatingSystem: 'macos',
+          json_key.operatingSystemVersion: '10.14.5',
+          json_key.packageConfig: 'config.json',
+          json_key.pathSeparator: '/',
+          json_key.resolvedExecutable: '/bin/dart',
+          json_key.script: 'file:///platform/test/fake_platform_test.dart',
+          json_key.stdinSupportsAnsi: true,
+          json_key.stdoutSupportsAnsi: false,
+          json_key.version: '1.22.0'
         };
         var jsonText = jsonEncode(json);
         var fake = FakeNativePlatform.fromJson(jsonText);
@@ -141,22 +141,22 @@ void main() {
       test('fromNullJson', () {
         // Explicit null values are allowed in the JSON, treated as unset value.
         var allNulls = <String, Object?>{
-          JsonKey.environment: null,
-          JsonKey.executable: null,
-          JsonKey.executableArguments: null,
-          JsonKey.lineTerminator: null,
-          JsonKey.localeName: null,
-          JsonKey.localHostname: null,
-          JsonKey.numberOfProcessors: null,
-          JsonKey.operatingSystem: null,
-          JsonKey.operatingSystemVersion: null,
-          JsonKey.packageConfig: null,
-          JsonKey.pathSeparator: null,
-          JsonKey.resolvedExecutable: null,
-          JsonKey.stdinSupportsAnsi: null,
-          JsonKey.stdoutSupportsAnsi: null,
-          JsonKey.script: null,
-          JsonKey.version: null
+          json_key.environment: null,
+          json_key.executable: null,
+          json_key.executableArguments: null,
+          json_key.lineTerminator: null,
+          json_key.localeName: null,
+          json_key.localHostname: null,
+          json_key.numberOfProcessors: null,
+          json_key.operatingSystem: null,
+          json_key.operatingSystemVersion: null,
+          json_key.packageConfig: null,
+          json_key.pathSeparator: null,
+          json_key.resolvedExecutable: null,
+          json_key.stdinSupportsAnsi: null,
+          json_key.stdoutSupportsAnsi: null,
+          json_key.script: null,
+          json_key.version: null
         };
         var fake = FakeNativePlatform.fromJson(jsonEncode(allNulls));
         testNativeFake(fake, {});
@@ -186,48 +186,48 @@ void main() {
         fromJsonError('[]');
 
         // `environment`, if present, must be map from string to string.
-        fromJsonError('{"${JsonKey.environment}": "not a map"}');
-        fromJsonError('{"${JsonKey.environment}": ["not a map"]}');
-        fromJsonError('{"${JsonKey.environment}": {"x": 42}}');
+        fromJsonError('{"${json_key.environment}": "not a map"}');
+        fromJsonError('{"${json_key.environment}": ["not a map"]}');
+        fromJsonError('{"${json_key.environment}": {"x": 42}}');
 
         // `executableArguments`, if present, must be list of strings.
-        fromJsonError('{"${JsonKey.executableArguments}": true}');
-        fromJsonError('{"${JsonKey.executableArguments}": {}}');
-        fromJsonError('{"${JsonKey.executableArguments}": [42]}');
-        fromJsonError('{"${JsonKey.executableArguments}": ["a", null, "b"]}');
+        fromJsonError('{"${json_key.executableArguments}": true}');
+        fromJsonError('{"${json_key.executableArguments}": {}}');
+        fromJsonError('{"${json_key.executableArguments}": [42]}');
+        fromJsonError('{"${json_key.executableArguments}": ["a", null, "b"]}');
 
         // `numberOfProcessors`, if present, must be an integer.
-        fromJsonError('{"${JsonKey.numberOfProcessors}": "42"}');
-        fromJsonError('{"${JsonKey.numberOfProcessors}": [42]}');
-        fromJsonError('{"${JsonKey.numberOfProcessors}": 3.14}');
+        fromJsonError('{"${json_key.numberOfProcessors}": "42"}');
+        fromJsonError('{"${json_key.numberOfProcessors}": [42]}');
+        fromJsonError('{"${json_key.numberOfProcessors}": 3.14}');
 
         // `script`, if present, must be string with valid URI.
-        fromJsonError('{"${JsonKey.script}": false}');
-        fromJsonError('{"${JsonKey.script}": ["valid:///uri"]}');
-        fromJsonError('{"${JsonKey.script}": {"valid": "///uri"}}');
-        fromJsonError('{"${JsonKey.script}": false}');
-        fromJsonError('{"${JsonKey.script}": "4:///"}'); // Invalid URI scheme.
+        fromJsonError('{"${json_key.script}": false}');
+        fromJsonError('{"${json_key.script}": ["valid:///uri"]}');
+        fromJsonError('{"${json_key.script}": {"valid": "///uri"}}');
+        fromJsonError('{"${json_key.script}": false}');
+        fromJsonError('{"${json_key.script}": "4:///"}'); // Invalid URI scheme.
 
         // `*AcceptsAnsiCodes`, if present, must be booleans.
-        fromJsonError('{"${JsonKey.stdinSupportsAnsi}": 42}');
-        fromJsonError('{"${JsonKey.stdinSupportsAnsi}": "false"}');
-        fromJsonError('{"${JsonKey.stdinSupportsAnsi}": []}');
-        fromJsonError('{"${JsonKey.stdoutSupportsAnsi}": 42}');
-        fromJsonError('{"${JsonKey.stdoutSupportsAnsi}": "false"}');
-        fromJsonError('{"${JsonKey.stdoutSupportsAnsi}": []}');
+        fromJsonError('{"${json_key.stdinSupportsAnsi}": 42}');
+        fromJsonError('{"${json_key.stdinSupportsAnsi}": "false"}');
+        fromJsonError('{"${json_key.stdinSupportsAnsi}": []}');
+        fromJsonError('{"${json_key.stdoutSupportsAnsi}": 42}');
+        fromJsonError('{"${json_key.stdoutSupportsAnsi}": "false"}');
+        fromJsonError('{"${json_key.stdoutSupportsAnsi}": []}');
 
         // Remaining properties must be strings.
         for (var name in [
-          JsonKey.executable,
-          JsonKey.lineTerminator,
-          JsonKey.localeName,
-          JsonKey.localHostname,
-          JsonKey.operatingSystem,
-          JsonKey.operatingSystemVersion,
-          JsonKey.packageConfig,
-          JsonKey.pathSeparator,
-          JsonKey.resolvedExecutable,
-          JsonKey.version,
+          json_key.executable,
+          json_key.lineTerminator,
+          json_key.localeName,
+          json_key.localHostname,
+          json_key.operatingSystem,
+          json_key.operatingSystemVersion,
+          json_key.packageConfig,
+          json_key.pathSeparator,
+          json_key.resolvedExecutable,
+          json_key.version,
         ]) {
           fromJsonError('{"$name": 42}');
           fromJsonError('{"$name": ["not a string"]}');
@@ -379,7 +379,7 @@ void _testProperty(Object? Function() read, Object? expected) {
 /// for the expected operating system.
 void testNativeFake(
     NativePlatform actual, Map<String, Object?> expectedValues) {
-  var expectedOS = expectedValues[JsonKey.operatingSystem] as String?;
+  var expectedOS = expectedValues[json_key.operatingSystem] as String?;
   _testProperty(() => actual.operatingSystem, expectedOS);
   if (expectedOS == null) {
     expect(() => actual.isAndroid, throwsStateError);
@@ -397,30 +397,30 @@ void testNativeFake(
     expect(actual.isWindows, expectedOS == NativePlatform.windows);
   }
   _testProperty(() => actual.operatingSystemVersion,
-      expectedValues[JsonKey.operatingSystemVersion]);
-  _testProperty(() => actual.environment, expectedValues[JsonKey.environment]);
-  _testProperty(() => actual.executable, expectedValues[JsonKey.executable]);
+      expectedValues[json_key.operatingSystemVersion]);
+  _testProperty(() => actual.environment, expectedValues[json_key.environment]);
+  _testProperty(() => actual.executable, expectedValues[json_key.executable]);
   _testProperty(() => actual.executableArguments,
-      expectedValues[JsonKey.executableArguments]);
+      expectedValues[json_key.executableArguments]);
   _testProperty(
-      () => actual.lineTerminator, expectedValues[JsonKey.lineTerminator]);
-  _testProperty(() => actual.localeName, expectedValues[JsonKey.localeName]);
+      () => actual.lineTerminator, expectedValues[json_key.lineTerminator]);
+  _testProperty(() => actual.localeName, expectedValues[json_key.localeName]);
   _testProperty(
-      () => actual.localHostname, expectedValues[JsonKey.localHostname]);
+      () => actual.localHostname, expectedValues[json_key.localHostname]);
   _testProperty(() => actual.numberOfProcessors,
-      expectedValues[JsonKey.numberOfProcessors]);
+      expectedValues[json_key.numberOfProcessors]);
   // Package-config is nullable, so doesn't throw if null.
-  expect(actual.packageConfig, expectedValues[JsonKey.packageConfig]);
+  expect(actual.packageConfig, expectedValues[json_key.packageConfig]);
   _testProperty(
-      () => actual.pathSeparator, expectedValues[JsonKey.pathSeparator]);
+      () => actual.pathSeparator, expectedValues[json_key.pathSeparator]);
   _testProperty(() => actual.resolvedExecutable,
-      expectedValues[JsonKey.resolvedExecutable]);
-  var scriptText = expectedValues[JsonKey.script] as String?;
+      expectedValues[json_key.resolvedExecutable]);
+  var scriptText = expectedValues[json_key.script] as String?;
   var scriptUri = scriptText != null ? Uri.parse(scriptText) : null;
   _testProperty(() => actual.script, scriptUri);
   _testProperty(() => actual.stdinSupportsAnsi,
-      expectedValues[JsonKey.stdinSupportsAnsi]);
+      expectedValues[json_key.stdinSupportsAnsi]);
   _testProperty(() => actual.stdoutSupportsAnsi,
-      expectedValues[JsonKey.stdoutSupportsAnsi]);
-  _testProperty(() => actual.version, expectedValues[JsonKey.version]);
+      expectedValues[json_key.stdoutSupportsAnsi]);
+  _testProperty(() => actual.version, expectedValues[json_key.version]);
 }
