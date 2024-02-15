@@ -11,10 +11,14 @@ import 'package:test/test.dart';
 import 'package:platform/platform.dart';
 
 void main() {
+  print(
+      "native? dart.library.io: ${const bool.fromEnvironment('dart.library.io')}");
+  print(
+      "browser? dart.library.js: ${const bool.fromEnvironment('dart.library.js')}");
   final platform = Platform.current;
   final browserPlatform = platform.browserPlatform;
 
-  test('Running on native', () {
+  test('Running on browser', () {
     expect(browserPlatform, isNotNull);
     expect(platform.isNative, false);
     expect(platform.isBrowser, true);
