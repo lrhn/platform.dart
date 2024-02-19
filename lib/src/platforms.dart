@@ -20,25 +20,31 @@ export 'platform_specific/platforms_impl.dart'
 extension PlatformIsOS on Platform {
   /// Whether this is a [nativePlatform] on [Android](NativePlatform.isAndroid).
   @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   bool get isAndroid => nativePlatform?.isAndroid ?? false;
 
   /// Whether this is a [nativePlatform] on [Fuchsia](NativePlatform.isFuchsia).
   @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   bool get isFuchsia => nativePlatform?.isFuchsia ?? false;
 
   /// Whether this is a [nativePlatform] on [iOS](NativePlatform.isIOS).
   @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   bool get isIOS => nativePlatform?.isIOS ?? false;
 
   /// Whether this is a [nativePlatform] on [Linux](NativePlatform.isLinux).
   @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   bool get isLinux => nativePlatform?.isLinux ?? false;
 
   /// Whether this is a [nativePlatform] on [MacOS](NativePlatform.isMacOS).
   @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   bool get isMacOS => nativePlatform?.isMacOS ?? false;
 
   /// Whether this is a [nativePlatform] on [Windows](NativePlatform.isWindows).
   @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   bool get isWindows => nativePlatform?.isWindows ?? false;
 }

@@ -40,28 +40,22 @@ final class Platform {
       : ((Zone.current[override.zoneKey] as Platform?) ?? platformInstance);
 
   /// The current native platform, if running on a native platform.
-  @pragma('vm:prefer-inline')
   NativePlatform? get nativePlatform => null;
 
   /// The current browser platform, if running on a browser platform.
-  @pragma('vm:prefer-inline')
   BrowserPlatform? get browserPlatform => null;
 
   /// The current Wasm platform, if running on a Wasm platform.
-  @pragma('vm:prefer-inline')
   WasmPlatform? get wasmPlatform => wasmPlatformInstance;
 
   /// Whether currently running on a native platform.
-  @pragma('vm:prefer-inline')
-  bool get isNative => true;
+  bool get isNative => false;
 
   /// Whether currently running in a browser.
-  @pragma('vm:prefer-inline')
   bool get isBrowser => false;
 
   /// Whether currently running in a Wasm runtime.
-  @pragma('vm:prefer-inline')
-  bool get isWasm => false;
+  bool get isWasm => true;
 
   const Platform._();
 }

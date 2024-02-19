@@ -50,6 +50,7 @@ const Platform platformInstance = Platform._();
 /// non-`null` and may one day provide information about the Wasm runtime.
 final class Platform {
   /// The current [Platform] information of the running program.
+  @pragma('vm:prefer-inline')
   static Platform get current => override.marker == null
       ? platformInstance
       : ((Zone.current[override.zoneKey] as Platform?) ?? platformInstance);

@@ -9,7 +9,8 @@ library;
 
 import 'dart:async' show Zone;
 import 'dart:convert' show JsonEncoder;
-import 'dart:html';
+import 'dart:js_interop' as js;
+import 'dart:js_interop_unsafe' as js;
 
 import 'platform_native_interface.dart';
 import 'platform_wasm_interface.dart';
@@ -37,32 +38,33 @@ const NativePlatform? nativePlatformInstance = null;
 /// non-`null` and may one day provide information about the Wasm runtime.
 final class Platform {
   /// The current [Platform] information of the running program.
+  @pragma('dart2js:prefer-inline')
   static Platform get current => override.marker == null
       ? platformInstance
       : ((Zone.current[override.zoneKey] as Platform?) ?? platformInstance);
 
   /// The current native platform, if running on a native platform.
-  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   NativePlatform? get nativePlatform => null;
 
   /// The current browser platform, if running on a browser platform.
-  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   BrowserPlatform? get browserPlatform => browserPlatformInstance;
 
   /// The current Wasm platform, if running on a Wasm platform.
-  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   WasmPlatform? get wasmPlatform => null;
 
   /// Whether currently running on a native platform.
-  @pragma('vm:prefer-inline')
-  bool get isNative => true;
+  @pragma('dart2js:prefer-inline')
+  bool get isNative => false;
 
   /// Whether currently running in a browser.
-  @pragma('vm:prefer-inline')
-  bool get isBrowser => false;
+  @pragma('dart2js:prefer-inline')
+  bool get isBrowser => true;
 
   /// Whether currently running in a Wasm runtime.
-  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
   bool get isWasm => false;
 
   const Platform._();
@@ -82,10 +84,20 @@ final class BrowserPlatform {
   static BrowserPlatform? get current => Platform.current.browserPlatform;
 
   /// The browser's version, as reported by (something).
-  String get version => window.navigator.appVersion;
+  String get version =>
+      js.globalContext
+          .getProperty<js.JSObject?>('navigator'.toJS)
+          ?.getProperty<js.JSString?>('appVersion'.toJS)
+          ?.toDart ??
+      "No app version";
 
   /// The browser's user-agent string, as reported by `Navigator.userAgent`.
-  String get userAgent => window.navigator.userAgent;
+  String get userAgent =>
+      js.globalContext
+          .getProperty<js.JSObject?>('navigator'.toJS)
+          ?.getProperty<js.JSString?>('userAgent'.toJS)
+          ?.toDart ??
+      "No user agent";
 
   /// A best-effort attempt to detect when running in a Chromium-based browser.
   ///

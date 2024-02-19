@@ -13,14 +13,23 @@
 //     strings tree_shake.{exe,js} | grep "RUNNING"
 //
 // and check that the only retained value is either `RUNNING ON LINUX` or
-//`RUNNING IN A BROWSER`.
+// `RUNNING IN A BROWSER`.
 library;
 
 import 'package:platform/platform.dart';
 
 void main() {
+  const expectedPlatform = bool.fromEnvironment('dart.library.js_interop')
+      ? 'browser'
+      : bool.fromEnvironment('dart.library.io')
+          ? 'native'
+          : 'unknown';
+  print("Expected platform: $expectedPlatform");
+
   if (Platform.current.isBrowser) {
     print('RUNNING IN A BROWSER');
+    var browser = Platform.current.browserPlatform!;
+    print(browser.userAgent);
   } else if (Platform.current.isNative) {
     var native = Platform.current.nativePlatform!;
     if (native.isLinux) {

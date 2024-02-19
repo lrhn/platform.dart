@@ -1,4 +1,4 @@
-#! dart
+#! /bin/env dart
 // Copyright (c) 2024, the Dart project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
@@ -31,15 +31,31 @@ void main(List<String> args) {
   // Keep the files after running.
   var retain = false;
   var retainOnError = false;
+  var executeOnError = false;
   var verbose = false;
+  var nativeOnly = false;
+  var jsOnly = false;
+  var files = <String>[];
   for (var arg in args) {
-    if (arg == '-r') {
+    if (arg == '-n') {
+      nativeOnly = true;
+    } else if (arg == '-j') {
+      jsOnly = true;
+    } else if (arg == '-e') {
+      executeOnError = true;
+    } else if (arg == '-r') {
       retainOnError = true;
     } else if (arg == '-R') {
       retain = retainOnError = true;
     } else if (arg == '-v') {
       verbose = true;
+    } else {
+      files.add(arg);
     }
+  }
+  if (nativeOnly && jsOnly) {
+    stderr.writeln("Use only one of -j (JS only) or -n (native only).");
+    exit(1);
   }
 
   // Only works on Linux, MacOS or Windows, since those are the platforms
@@ -84,9 +100,6 @@ void main(List<String> args) {
     print("Executable: ${dartExe.path}");
   }
 
-  // Where examples are.
-  var exampleDir = Directory.fromUri(self.resolve('../example/'));
-
   // Where executables are written.
   var outputDir = Directory.systemTemp.createTempSync('platform.examples-');
   outputDir.createSync(recursive: true);
@@ -94,12 +107,23 @@ void main(List<String> args) {
     print("Output: ${outputDir.path}");
   }
 
+  if (files.isEmpty) {
+    // Where examples are.
+    var exampleDir = Directory.fromUri(self.resolve('../example/'));
+    for (var example in exampleDir.listSync()) {
+      if (example is File && example.path.endsWith('.dart')) {
+        files.add(example.path);
+      }
+    }
+  }
+
   var failures = <String>[];
 
-  for (var example in exampleDir.listSync()) {
-    if (example is File && example.path.endsWith('.dart')) {
-      var uri = Uri.file(example.path);
-      var exampleName = clipEnd(uri.pathSegments.last, '.dart');
+  for (var examplePath in files) {
+    var example = File(examplePath);
+    var uri = Uri.file(examplePath);
+    var exampleName = clipEnd(uri.pathSegments.last, '.dart');
+    if (!jsOnly) {
       var exeOutput =
           '${outputDir.path}${Platform.pathSeparator}$exampleName.exe';
       var result = Process.runSync(
@@ -107,14 +131,14 @@ void main(List<String> args) {
           stdoutEncoding: utf8,
           stderrEncoding: utf8,
           [
-        'compile',
-        'exe',
-        '--target-os',
-        platform,
-        '-o',
-        exeOutput,
-        example.path,
-      ]);
+            'compile',
+            'exe',
+            '--target-os',
+            platform,
+            '-o',
+            exeOutput,
+            example.path,
+          ]);
       if (!_checkCompiled(example, File(exeOutput), verbose)) {
         print("STDOUT:\n ${result.stdout}\nSTDERR:\n${result.stderr}");
         continue;
@@ -123,21 +147,29 @@ void main(List<String> args) {
       var exampleExe = '$exampleName.exe';
       if (!check(exeOutput, exampleExe)) {
         failures.add(exampleExe);
+        if (executeOnError) {
+          var result = Process.runSync(
+              exeOutput, stdoutEncoding: utf8, stderrEncoding: utf8, []);
+          print("Running program $exampleExe: Exit code = ${result.exitCode}");
+          print("STDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}");
+        }
       }
+    }
 
+    if (!nativeOnly) {
       var jsOutput =
           '${outputDir.path}${Platform.pathSeparator}$exampleName.js';
-      result = Process.runSync(
+      var result = Process.runSync(
           dartExe.path,
           stdoutEncoding: utf8,
           stderrEncoding: utf8,
           [
-        'compile',
-        'js',
-        '-o',
-        jsOutput,
-        example.path,
-      ]);
+            'compile',
+            'js',
+            '-o',
+            jsOutput,
+            example.path,
+          ]);
       if (!_checkCompiled(example, File(jsOutput), verbose)) {
         print("STDOUT:\n ${result.stdout}\nSTDERR:\n${result.stderr}");
         continue;
@@ -145,6 +177,15 @@ void main(List<String> args) {
       var exampleJS = '$exampleName.js';
       if (!check(jsOutput, exampleJS)) {
         failures.add(exampleJS);
+        // Try finding `d8` in path, and d8.js preamble in SDK.
+        // Until then, make sure to have a `d8` in then path which adds
+        // the preamble.
+        if (executeOnError) {
+          var result = Process.runSync(
+              'd8', stdoutEncoding: utf8, stderrEncoding: utf8, [jsOutput]);
+          print("Running program $exampleJS: Exit code = ${result.exitCode}");
+          print("STDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}");
+        }
       }
     }
   }

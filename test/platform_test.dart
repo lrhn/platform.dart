@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 
 void main() {
   // Change these if we get better ways to detect the platform.
-  const bool expectBrowser = bool.fromEnvironment('dart.library.html');
+  const bool expectBrowser = bool.fromEnvironment('dart.library.js_interop');
   const bool expectNative = bool.fromEnvironment('dart.library.io');
   const bool expectWasm = false; // For now.
 

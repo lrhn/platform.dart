@@ -11,20 +11,23 @@ import 'package:test/test.dart';
 import 'package:platform/platform.dart';
 
 void main() {
-  print(
-      "native? dart.library.io: ${const bool.fromEnvironment('dart.library.io')}");
-  print(
-      "browser? dart.library.js: ${const bool.fromEnvironment('dart.library.js')}");
+  const bool isNative = bool.fromEnvironment('dart.library.io');
+  const bool isBrowser = bool.fromEnvironment('dart.library.js_interop');
   final platform = Platform.current;
   final browserPlatform = platform.browserPlatform;
 
   test('Running on browser', () {
-    expect(browserPlatform, isNotNull);
-    expect(platform.isNative, false);
-    expect(platform.isBrowser, true);
-    expect(platform.isWasm, false);
-    expect(platform.nativePlatform, isNull);
-    expect(platform.wasmPlatform, isNull);
+    expect(isBrowser, true, reason: 'dart.library.js_interop');
+    expect(isNative, false, reason: 'dart.library.io');
+    expect(platform.isNative, false, reason: 'Platform.current.isNative');
+    expect(platform.isBrowser, true, reason: 'Platform.current.isBrowser');
+    expect(platform.isWasm, false, reason: 'Platform.current.isWasm');
+    expect(browserPlatform, isNotNull,
+        reason: 'Platform.current.browserPlatform');
+    expect(platform.nativePlatform, isNull,
+        reason: 'Platform.current.nativePlatform');
+    expect(platform.wasmPlatform, isNull,
+        reason: 'Platform.current.wasmPlatform');
   });
 
   if (browserPlatform == null) return; // Promote to non-null.
@@ -32,12 +35,15 @@ void main() {
   test('static properties', () {
     // The `current` getter is the same objects as
     // `Platform.current.browserPlatform`.
-    expect(browserPlatform, same(BrowserPlatform.current));
+    expect(browserPlatform, same(BrowserPlatform.current),
+        reason: 'BrowserPlatform.current');
   });
 
   test('Has same values as JS', () {
     // Everything is taken from browser (`window.navigator`).
-    expect(browserPlatform.userAgent, window.navigator.userAgent);
-    expect(browserPlatform.version, window.navigator.appVersion);
+    expect(browserPlatform.userAgent, window.navigator.userAgent,
+        reason: 'window.navigator.userAgent');
+    expect(browserPlatform.version, window.navigator.appVersion,
+        reason: 'window.navigator.appVersion');
   });
 }

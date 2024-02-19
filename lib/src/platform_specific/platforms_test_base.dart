@@ -13,7 +13,7 @@ export "platform_native_interface.dart"
     show NativePlatform, NativePlatformTestBase;
 
 export "platform_browser_interface.dart"
-    if (dart.library.js) "platform_browser_impl.dart"
+    if (dart.library.js_interop) "platform_browser_impl.dart"
     show BrowserPlatform, BrowserPlatformTestBase;
 
 export "platform_wasm_interface.dart"
@@ -21,7 +21,7 @@ export "platform_wasm_interface.dart"
     show WasmPlatform, WasmPlatformTestBase;
 
 export "platform_unknown_impl.dart"
+    if (dart.library.js_interop) "platform_browser_impl.dart"
     if (dart.library.io) "platform_native_impl.dart"
-    if (dart.library.js) "platform_browser_impl.dart"
     if (dart.library.wasm) "platform_wasm_impl.dart"
     show Platform, PlatformTestBase, nativePlatformInstance;
