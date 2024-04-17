@@ -13,7 +13,8 @@
 //     strings tree_shake_pattern_const.{exe,js} | grep "RUNNING"
 //
 // and check that the only retained value is either `RUNNING ON LINUX` or
-// `RUNNING IN A BROWSER`.library;
+// `RUNNING IN A BROWSER`.
+library;
 
 import 'package:platform/platform.dart';
 
