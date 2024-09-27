@@ -8,15 +8,15 @@
 /// and still depend on each other.
 library;
 
-import 'platforms_impl.dart' show Platform;
-export 'platforms_impl.dart' show BrowserPlatform, NativePlatform, Platform;
+import 'platforms_impl.dart' show HostPlatform;
+export 'platforms_impl.dart' show BrowserPlatform, HostPlatform, NativePlatform;
 
 /// Shorthands for checking operating system on the native platform.
 ///
 /// Extension getters on `Platform` which forward to the operating system
-/// checks on [Platform.nativePlatform], after checking that this is a native
-/// platform.
-extension PlatformIsOS on Platform {
+/// checks on [HostPlatform.nativePlatform], after checking that this
+/// is a native platform.
+extension PlatformIsOS on HostPlatform {
   /// Whether this is a [nativePlatform] on [Android](NativePlatform.isAndroid).
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')

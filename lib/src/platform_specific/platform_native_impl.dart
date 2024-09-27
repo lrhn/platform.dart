@@ -8,8 +8,6 @@ library;
 import 'dart:convert' show JsonEncoder;
 import 'dart:io' as io;
 
-import '../legacy_implementation/legacy_platform_members.dart'
-    show LegacyPlatformMembers;
 import '../testing/zone_overrides.dart' as override;
 import '../util/environment_override_keys.dart' as env;
 import '../util/json_keys.dart' as json_key;
@@ -25,7 +23,7 @@ final String _operatingSystemVersion =
     env.operatingSystemVersion ?? io.Platform.operatingSystemVersion;
 
 const NativePlatform nativePlatformInstance = NativePlatform._();
-const Platform platformInstance = Platform._();
+const HostPlatform platformInstance = HostPlatform._();
 
 /// Dart runtime platform information.
 ///
@@ -37,11 +35,11 @@ const Platform platformInstance = Platform._();
 ///
 /// If running in a browser, the [browserPlatform] objects is
 /// non-`null` and provides information about the browser.
-final class Platform with LegacyPlatformMembers {
-  /// The current [Platform] information of the running program.
+final class HostPlatform {
+  /// The current [HostPlatform] of the running program.
   @pragma('vm:prefer-inline')
-  static Platform get current =>
-      (override.platformOverride as Platform?) ?? platformInstance;
+  static HostPlatform get current =>
+      (override.platformOverride as HostPlatform?) ?? platformInstance;
 
   /// The current native platform, if running on a native platform.
   @pragma('vm:prefer-inline')
@@ -59,51 +57,12 @@ final class Platform with LegacyPlatformMembers {
   @pragma('vm:prefer-inline')
   bool get isBrowser => false;
 
-  const Platform._();
-
-  @Deprecated('Use NativePlatform.android instead')
-  static const String android = NativePlatform.android;
-  @Deprecated('Use NativePlatform.fuchsia instead')
-  static const String fuchsia = NativePlatform.fuchsia;
-  @Deprecated('Use NativePlatform.iOS instead')
-  static const String iOS = NativePlatform.iOS;
-  @Deprecated('Use NativePlatform.linux instead')
-  static const String linux = NativePlatform.linux;
-  @Deprecated('Use NativePlatform.macOS instead')
-  static const String macOS = NativePlatform.macOS;
-  @Deprecated('Use NativePlatform.windows instead')
-  static const String windows = NativePlatform.windows;
-  @Deprecated('Use NativePlatform.operatingSystemValues instead')
-  static const List<String> operatingSystemValues = [
-    android,
-    fuchsia,
-    iOS,
-    linux,
-    macOS,
-    windows
-  ];
-
-  /// Produces the default instance of [Platform].
-  ///
-  /// The default platform instance *cannot be mocked*.
-  /// Use [Platform.current] to access an instance that
-  /// can be changed for testing.
-  ///
-  /// In general, prefer using `Platform.current` over this
-  /// constructor, which mainly exists as a target for
-  /// migration from earlier versions of this package.
-  const factory Platform() = _PlatformInstance;
-}
-
-// Helper extension type allowing a const factory constructor to
-// return the same object every time.
-extension type const _PlatformInstance._(Platform _) implements Platform {
-  const _PlatformInstance() : this._(platformInstance);
+  const HostPlatform._();
 }
 
 /// Subtype which can be extended by a fake for testing.
-abstract base class PlatformTestBase extends Platform {
-  const PlatformTestBase() : super._();
+abstract base class HostPlatformTestBase extends HostPlatform {
+  const HostPlatformTestBase() : super._();
 }
 
 /// Properties of the native host platform and process.
@@ -118,17 +77,17 @@ final class NativePlatform {
 
   /// The current native platform, if any.
   ///
-  /// Same as [Platform.current.nativePlatform](Platform.nativePlatform).
+  /// Same as [`Platform.current.nativePlatform`](Platform.nativePlatform).
   @pragma('vm:prefer-inline')
-  static NativePlatform? get current => Platform.current.nativePlatform;
+  static NativePlatform? get current => HostPlatform.current.nativePlatform;
 
   /// The value of [operatingSystem] on Linux.
   ///
   /// Can be used, for example, in switch cases when switching on
   /// [operatingSystem].
   ///
-  /// To just check if the platform is Linux, use
-  /// [isLinux](HostPlatforms.isLinux).
+  /// To just check if the platform is, for example Linux, use [isLinux] or
+  /// the shorthand [`Platform.current.isLinux`](HostPlatforms.isLinux).
   static const String linux = 'linux';
 
   /// The value of [operatingSystem] on Windows.

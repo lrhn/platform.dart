@@ -5,14 +5,16 @@
 import 'package:platform/platform.dart';
 
 void main() {
-  switch (Platform.current) {
-    case Platform(:var browserPlatform?):
+  switch (HostPlatform.current) {
+    case HostPlatform(:var browserPlatform?):
       print('Running in a browser');
       print('User-agent: ${browserPlatform.userAgent}');
-    case Platform(nativePlatform: var platform?)
-        when platform.isLinux | platform.isMacOS | platform.isWindows:
-      print('Running on ${platform.operatingSystem}');
-      print('Hostname: ${platform.localHostname}');
+    case HostPlatform(nativePlatform: var nativePlatform?)
+        when nativePlatform.isLinux |
+            nativePlatform.isMacOS |
+            nativePlatform.isWindows:
+      print('Running on ${nativePlatform.operatingSystem}');
+      print('Hostname: ${nativePlatform.localHostname}');
     default:
       print('Not running on supported platform');
   }

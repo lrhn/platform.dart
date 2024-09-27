@@ -16,7 +16,7 @@ void main() {
 
   test('Is compiled on native', () {
     expect(original, isNotNull);
-    expect(Platform.current.nativePlatform, same(original));
+    expect(HostPlatform.current.nativePlatform, same(original));
   });
 
   if (original == null) return; // Promote to non-null from here.
@@ -260,12 +260,11 @@ void main() {
   group('runtime override', () {
     test('sync', () {
       var fake =
-          FakeNativePlatform.from(original)
-          .copyWith(operatingSystem: otherOS);
+          FakeNativePlatform.from(original).copyWith(operatingSystem: otherOS);
       expect(fake.operatingSystem, otherOS);
       fake.run(() {
         expect(NativePlatform.current, same(fake));
-        expect(Platform.current.nativePlatform, same(fake));
+        expect(HostPlatform.current.nativePlatform, same(fake));
         expect(NativePlatform.current?.operatingSystem, otherOS);
       });
     });
@@ -277,19 +276,19 @@ void main() {
       var asyncTesting = fake.run(() async {
         // Runs synchronously.
         expect(NativePlatform.current, same(fake));
-        expect(Platform.current.nativePlatform, same(fake));
+        expect(HostPlatform.current.nativePlatform, same(fake));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         parts++;
         await Future(() {}); // Timer-delay.
         // Runs later.
         expect(NativePlatform.current, same(fake));
-        expect(Platform.current.nativePlatform, same(fake));
+        expect(HostPlatform.current.nativePlatform, same(fake));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         parts++;
       });
       expect(parts, 1);
       expect(NativePlatform.current, same(original));
-      expect(Platform.current.nativePlatform, same(original));
+      expect(HostPlatform.current.nativePlatform, same(original));
       expect(NativePlatform.current?.operatingSystem, original.operatingSystem);
       await asyncTesting;
       expect(parts, 2);
@@ -297,26 +296,25 @@ void main() {
   });
   group('nested overrides', () {
     final fakeNative =
-        FakeNativePlatform.from(original)
-        .copyWith(operatingSystem: otherOS);
+        FakeNativePlatform.from(original).copyWith(operatingSystem: otherOS);
     final fakeNative2 = FakeNativePlatform.from(fakeNative)
         .copyWith(operatingSystemVersion: otherVersion);
     test('sync', () {
       fakeNative.run(() {
         expect(NativePlatform.current, same(fakeNative));
-        expect(Platform.current.nativePlatform, same(fakeNative));
+        expect(HostPlatform.current.nativePlatform, same(fakeNative));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         expect(NativePlatform.current?.operatingSystemVersion,
             original.operatingSystemVersion);
         fakeNative2.run(() {
           expect(NativePlatform.current, same(fakeNative2));
-          expect(Platform.current.nativePlatform, same(fakeNative2));
+          expect(HostPlatform.current.nativePlatform, same(fakeNative2));
           expect(NativePlatform.current?.operatingSystem, otherOS);
           expect(NativePlatform.current?.operatingSystemVersion, otherVersion);
         });
         // Previous override restored when done.
         expect(NativePlatform.current, same(fakeNative));
-        expect(Platform.current.nativePlatform, same(fakeNative));
+        expect(HostPlatform.current.nativePlatform, same(fakeNative));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         expect(NativePlatform.current?.operatingSystemVersion,
             original.operatingSystemVersion);
@@ -325,20 +323,20 @@ void main() {
     test('async', () async {
       await fakeNative.run(() async {
         expect(NativePlatform.current, same(fakeNative));
-        expect(Platform.current.nativePlatform, same(fakeNative));
+        expect(HostPlatform.current.nativePlatform, same(fakeNative));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         expect(NativePlatform.current?.operatingSystemVersion,
             original.operatingSystemVersion);
         var parts = 0;
         var asyncTesting = fakeNative2.run(() async {
           expect(NativePlatform.current, same(fakeNative2));
-          expect(Platform.current.nativePlatform, same(fakeNative2));
+          expect(HostPlatform.current.nativePlatform, same(fakeNative2));
           expect(NativePlatform.current?.operatingSystem, otherOS);
           expect(NativePlatform.current?.operatingSystemVersion, otherVersion);
           parts++;
           await Future(() {});
           expect(NativePlatform.current, same(fakeNative2));
-          expect(Platform.current.nativePlatform, same(fakeNative2));
+          expect(HostPlatform.current.nativePlatform, same(fakeNative2));
           expect(NativePlatform.current?.operatingSystem, otherOS);
           expect(NativePlatform.current?.operatingSystemVersion, otherVersion);
           parts++;
@@ -346,7 +344,7 @@ void main() {
         expect(parts, 1);
         // Previous override restored when done.
         expect(NativePlatform.current, same(fakeNative));
-        expect(Platform.current.nativePlatform, same(fakeNative));
+        expect(HostPlatform.current.nativePlatform, same(fakeNative));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         expect(NativePlatform.current?.operatingSystemVersion,
             original.operatingSystemVersion);

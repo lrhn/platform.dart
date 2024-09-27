@@ -5,19 +5,19 @@
 import 'package:platform/platform.dart';
 
 void main(List<String> arguments) {
-  final platform = Platform.current.nativePlatform;
-  if (platform == null) {
+  final nativePlatform = HostPlatform.current.nativePlatform;
+  if (nativePlatform == null) {
     print('This program only supports execution on native platforms.');
   } else {
-    print('Operating System: ${platform.operatingSystem}.');
-    print('Local Hostname: ${platform.localHostname}.');
-    print('Number of Processors: ${platform.numberOfProcessors}.');
-    print('Path Separator: ${platform.pathSeparator}.');
-    print('Locale Name: ${platform.localeName}.');
-    print('Stdin Supports ANSI: ${yn(platform.stdinSupportsAnsi)}.');
-    print('Stdout Supports ANSI: ${yn(platform.stdoutSupportsAnsi)}.');
-    print('Executable Arguments: ${platform.executableArguments}.');
-    print('Dart Version: ${platform.version}.');
+    print('Operating System: ${nativePlatform.operatingSystem}.');
+    print('Local Hostname: ${nativePlatform.localHostname}.');
+    print('Number of Processors: ${nativePlatform.numberOfProcessors}.');
+    print('Path Separator: ${nativePlatform.pathSeparator}.');
+    print('Locale Name: ${nativePlatform.localeName}.');
+    print('Stdin Supports ANSI: ${yn(nativePlatform.stdinSupportsAnsi)}.');
+    print('Stdout Supports ANSI: ${yn(nativePlatform.stdoutSupportsAnsi)}.');
+    print('Executable Arguments: ${nativePlatform.executableArguments}.');
+    print('Dart Version: ${nativePlatform.version}.');
   }
 }
 

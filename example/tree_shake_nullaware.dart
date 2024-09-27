@@ -25,13 +25,13 @@ void main() {
           : 'unknown';
   print('Expected platform: $expectedPlatform');
 
-  if (Platform.current.isBrowser) {
+  if (HostPlatform.current.isBrowser) {
     print('RUNNING IN A BROWSER');
-  } else if (Platform.current.nativePlatform?.isLinux ?? false) {
+  } else if (HostPlatform.current.nativePlatform?.isLinux ?? false) {
     print('RUNNING ON LINUX');
-  } else if (Platform.current.nativePlatform?.isMacOS ?? false) {
+  } else if (HostPlatform.current.nativePlatform?.isMacOS ?? false) {
     print('RUNNING ON MACOS');
-  } else if (Platform.current.nativePlatform?.isWindows ?? false) {
+  } else if (HostPlatform.current.nativePlatform?.isWindows ?? false) {
     print('RUNNING ON WINDOWS');
   }
 }

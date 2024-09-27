@@ -13,10 +13,10 @@ import 'zone_overrides.dart' as overrides;
 
 /// Fake Dart runtime platform information.
 ///
-/// Implements [Platform], but allows a [FakeBrowserPlatform] or
+/// Implements [HostPlatform], but allows a [FakeBrowserPlatform] or
 /// [FakeNativePlatform] to be the non-`null` platform object.
 @visibleForTesting
-final class FakePlatform extends PlatformTestBase {
+final class FakeHostPlatform extends HostPlatformTestBase {
   /// The current native platform, if running on a native platform.
   @override
   final FakeNativePlatform? nativePlatform;
@@ -35,44 +35,44 @@ final class FakePlatform extends PlatformTestBase {
 
   /// A fake platform with the given [nativePlatform].
   ///
-  /// Used by [FakeNativePlatform.run] to create a fake [Platform]
-  /// with itself as the [Platform.nativePlatform].
-  const FakePlatform._native(FakeNativePlatform this.nativePlatform)
+  /// Used by [FakeNativePlatform.run] to create a fake [HostPlatform]
+  /// with itself as the [HostPlatform.nativePlatform].
+  const FakeHostPlatform._native(FakeNativePlatform this.nativePlatform)
       : browserPlatform = null;
 
   /// A fake platform with the given [browserPlatform].
   ///
-  /// Used by [FakeBrowserPlatform.run] to create a fake [Platform]
-  /// with itself as the [Platform.browserPlatform].
-  const FakePlatform._browser(FakeBrowserPlatform this.browserPlatform)
+  /// Used by [FakeBrowserPlatform.run] to create a fake [HostPlatform]
+  /// with itself as the [HostPlatform.browserPlatform].
+  const FakeHostPlatform._browser(FakeBrowserPlatform this.browserPlatform)
       : nativePlatform = null;
 
   /// A platform with *none* of the native or browser platforms set.
-  const FakePlatform.unknown()
+  const FakeHostPlatform.unknown()
       : nativePlatform = null,
         browserPlatform = null;
 
   /// A fake platform with the same properties as [platform].
-  factory FakePlatform.fromPlatform(Platform platform) {
+  factory FakeHostPlatform.fromPlatform(HostPlatform platform) {
     // There is currently no way to have a platform with both
     // a browser platform and a native platform.
     var native = platform.nativePlatform;
-    if (native != null) return FakePlatform.fromNative(native);
+    if (native != null) return FakeHostPlatform.fromNative(native);
     var browser = platform.browserPlatform;
-    if (browser != null) return FakePlatform.fromBrowser(browser);
-    return const FakePlatform.unknown();
+    if (browser != null) return FakeHostPlatform.fromBrowser(browser);
+    return const FakeHostPlatform.unknown();
   }
 
-  /// Creates a [FakePlatform] with a [NativePlatform].
+  /// Creates a [FakeHostPlatform] with a [NativePlatform].
   ///
   /// Creates a [FakeNativePlatform.new] with the same arguments,
-  /// and a [FakePlatform] with that as [nativePlatform].
+  /// and a [FakeHostPlatform] with that as [nativePlatform].
   ///
   /// It's recommended to use
   /// ```dart
-  /// FakePlatform.fromNative(FakeNativePlatform(...))
+  /// FakeHostPlatform.fromNative(FakeNativePlatform(...))
   /// ```
-  FakePlatform.native({
+  FakeHostPlatform.native({
     Map<String, String>? environment,
     String? executable,
     List<String>? executableArguments,
@@ -108,60 +108,60 @@ final class FakePlatform extends PlatformTestBase {
           version: version,
         ));
 
-  /// Creates a [FakePlatform] with a [NativePlatform].
+  /// Creates a [FakeHostPlatform] with a [NativePlatform].
   ///
-  /// If [nativePlatform] is omitted or `null`, the created `FakePlatform]
-  /// has a new [FakeNativePlatform] as [Platform.nativePlatform].
-  FakePlatform.fromNative(NativePlatform nativePlatform)
+  /// If [nativePlatform] is omitted or `null`, the created `FakeHostPlatform]
+  /// has a new [FakeNativePlatform] as [HostPlatform.nativePlatform].
+  FakeHostPlatform.fromNative(NativePlatform nativePlatform)
       : this._native(FakeNativePlatform.from(nativePlatform));
 
-  /// Creates a [FakePlatform] with a [FakeNativePlatform] created from JSON.
+  /// Creates a [FakeHostPlatform] with a [FakeNativePlatform] created from JSON.
   ///
   /// A new [FakeNativePlatform] is created using [FakeNativePlatform.fromJson]
-  /// with [nativePlatformJson] as argument, an a new [FakePlatform] is created
-  /// with that native platform as [Platform.nativePlatform].
-  FakePlatform.nativeFromJson(String nativePlatformJson)
+  /// with [nativePlatformJson] as argument, an a new [FakeHostPlatform] is created
+  /// with that native platform as [HostPlatform.nativePlatform].
+  FakeHostPlatform.nativeFromJson(String nativePlatformJson)
       : this._native(FakeNativePlatform.fromJson(nativePlatformJson));
 
-  /// Creates a [FakePlatform] with a [BrowserPlatform].
+  /// Creates a [FakeHostPlatform] with a [BrowserPlatform].
   ///
-  /// If [browserPlatform] is omitted or `null`, the created `FakePlatform]
-  /// has a new [FakeBrowserPlatform] as [Platform.browserPlatform].
-  FakePlatform.fromBrowser([BrowserPlatform? browserPlatform])
+  /// If [browserPlatform] is omitted or `null`, the created `FakeHostPlatform]
+  /// has a new [FakeBrowserPlatform] as [HostPlatform.browserPlatform].
+  FakeHostPlatform.fromBrowser([BrowserPlatform? browserPlatform])
       : this._browser(browserPlatform = browserPlatform == null
             ? FakeBrowserPlatform()
             : FakeBrowserPlatform.fromPlatform(browserPlatform));
 
-  /// Creates a [FakePlatform] with a [FakeBrowserPlatform] created from JSON.
+  /// Creates a [FakeHostPlatform] with a [FakeBrowserPlatform] created from JSON.
   ///
   /// A new [FakeBrowserPlatform] is created using
   /// [FakeBrowserPlatform.fromJson] with [browserPlatformJson] as argument,
-  /// and a new [FakePlatform] is created with that native platform as
-  /// [Platform.browserPlatform].
-  FakePlatform.browserFromJson(String browserPlatformJson)
+  /// and a new [FakeHostPlatform] is created with that native platform as
+  /// [HostPlatform.browserPlatform].
+  FakeHostPlatform.browserFromJson(String browserPlatformJson)
       : this._browser(FakeBrowserPlatform.fromJson(browserPlatformJson));
 
   /// Runs [fakePlatformCode] with this fake platform as the current platform.
   ///
-  /// While [fakePlatformCode] is running, the [Platform.current] refers to this
-  /// fake platform, which is likely the [FakePlatform.unknown] platform.
+  /// While [fakePlatformCode] is running, the [HostPlatform.current] refers to this
+  /// fake platform, which is likely the [FakeHostPlatform.unknown] platform.
   ///
-  /// Prior reads of [Platform.current] will retain their original value,
-  /// so the `fakePlatformCode` should make sure to read [Platform.current]
+  /// Prior reads of [HostPlatform.current] will retain their original value,
+  /// so the `fakePlatformCode` should make sure to read [HostPlatform.current]
   /// when it's needed, and avoid any caching.
   R run<R>(R Function() fakePlatformCode) =>
       overrides.runWith(fakePlatformCode, this, _OverrideMarker.marker);
 
-  /// Migration helper for legacy `FakePlatform.copyWith`.
+  /// Migration helper for legacy `FakeHostPlatform.copyWith`.
   ///
   /// Use [FakeNativePlatform.copyWith] instead.
   /// Work directly with [FakeNativePlatform], rather than creating a
-  /// `FakePlatform` from it.
+  /// `FakeHostPlatform` from it.
   ///
   /// Only works if there is a current [nativePlatform].
   ///
   /// Will be deprecated and removed when legacy classes are removed.
-  FakePlatform copyWithNativeMigrationHelper({
+  FakeHostPlatform copyWithNativeMigrationHelper({
     int? numberOfProcessors,
     String? pathSeparator,
     String? operatingSystem,
@@ -178,7 +178,7 @@ final class FakePlatform extends PlatformTestBase {
     bool? stdoutSupportsAnsi,
     String? localeName,
   }) {
-    return FakePlatform._native(nativePlatform!.copyWith(
+    return FakeHostPlatform._native(nativePlatform!.copyWith(
       numberOfProcessors: numberOfProcessors,
       pathSeparator: pathSeparator,
       operatingSystem: operatingSystem,
@@ -247,14 +247,14 @@ final class FakeBrowserPlatform extends BrowserPlatformTestBase {
 
   /// Runs [fakePlatformCode] with this as the current browser platform.
   ///
-  /// While [fakePlatformCode] is running, the [Platform.browserPlatform]
-  /// of [Platform.current] refers to this [FakeBrowserPlatform].
+  /// While [fakePlatformCode] is running, the [HostPlatform.browserPlatform]
+  /// of [HostPlatform.current] refers to this [FakeBrowserPlatform].
   ///
-  /// Prior reads of [Platform.current] will retain their original value,
-  /// so the `fakePlatformCode` should make sure to read [Platform.current]
+  /// Prior reads of [HostPlatform.current] will retain their original value,
+  /// so the `fakePlatformCode` should make sure to read [HostPlatform.current]
   /// when it's needed, and avoid any caching.
-  R run<R>(R Function() fakePlatformCode) => overrides.runWith(
-      fakePlatformCode, FakePlatform._browser(this), _OverrideMarker.marker);
+  R run<R>(R Function() fakePlatformCode) => overrides.runWith(fakePlatformCode,
+      FakeHostPlatform._browser(this), _OverrideMarker.marker);
 
   @override
   String toJson() => const JsonEncoder.withIndent('  ').convert({
@@ -306,6 +306,40 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   final bool? _stdoutSupportsAnsi;
   final String? _version;
 
+  // Non-validating constructor for internal use
+  FakeNativePlatform._({
+    Map<String, String>? environment,
+    String? executable,
+    List<String>? executableArguments,
+    String? lineTerminator,
+    String? localeName,
+    String? localHostname,
+    int? numberOfProcessors,
+    String? operatingSystem,
+    String? operatingSystemVersion,
+    this.packageConfig,
+    String? pathSeparator,
+    String? resolvedExecutable,
+    Uri? script,
+    bool? stdinSupportsAnsi,
+    bool? stdoutSupportsAnsi,
+    String? version,
+  })  : _environment = environment,
+        _executable = executable,
+        _executableArguments = executableArguments,
+        _lineTerminator = lineTerminator,
+        _localeName = localeName,
+        _localHostname = localHostname,
+        _numberOfProcessors = numberOfProcessors,
+        _operatingSystem = operatingSystem,
+        _operatingSystemVersion = operatingSystemVersion,
+        _pathSeparator = pathSeparator,
+        _resolvedExecutable = resolvedExecutable,
+        _script = script,
+        _stdinSupportsAnsi = stdinSupportsAnsi,
+        _stdoutSupportsAnsi = stdoutSupportsAnsi,
+        _version = version;
+
   /// Creates a new [FakeNativePlatform] with the specified properties.
   ///
   /// Parameters that are not provided with a non-`null` value
@@ -316,8 +350,11 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   /// This behavior can be used in tests to ensure that code does not
   /// read properties that it is not supposed to.
   ///
-  /// The [operatingSystem] string must be one of the known operating system
+  /// The [operatingSystem] should be one of the known operating system
   /// ID strings in [NativePlatform.operatingSystemValues].
+  ///
+  /// An [environment] map or [executableArguments] list argument
+  /// is copied.
   FakeNativePlatform({
     Map<String, String>? environment,
     String? executable,
@@ -337,11 +374,14 @@ final class FakeNativePlatform extends NativePlatformTestBase {
     String? version,
   })  : _environment = environment == null
             ? null
-            : operatingSystem == NativePlatform.windows
-                ? (_caseInsensitiveMap()..addAll(environment))
-                : environment,
+            : Map<String, String>.unmodifiable(
+                operatingSystem == NativePlatform.windows
+                    ? (_caseInsensitiveMap()..addAll(environment))
+                    : environment),
         _executable = executable,
-        _executableArguments = executableArguments,
+        _executableArguments = executableArguments == null
+            ? null
+            : List<String>.unmodifiable(executableArguments),
         _lineTerminator = lineTerminator,
         _localeName = localeName,
         _localHostname = localHostname,
@@ -403,30 +443,30 @@ final class FakeNativePlatform extends NativePlatformTestBase {
         jsonObject, json_key.executableArguments, jsonText);
     var script = _getJsonProperty<String>(jsonObject, 'script', jsonText);
 
-    return FakeNativePlatform(
+    return FakeNativePlatform._(
       // Check that environment values are strings. Filter out null values.
       environment: environment == null
           ? null
-          : <String, String>{
+          : Map<String, String>.unmodifiable(<String, String>{
               for (var MapEntry(:key, :value) in environment.entries)
                 if (value != null)
                   key: (value is String
                       ? value
                       : _failJsonParse<String>(
                           'environment[$key]', value, jsonText))
-            },
+            }),
       executable:
           _getJsonProperty<String>(jsonObject, json_key.executable, jsonText),
       // Check the executable arguments are strings.
       executableArguments: executableArguments == null
           ? null
-          : <String>[
+          : List<String>.unmodifiable(<String>[
               for (var argument in executableArguments)
                 argument is String
                     ? argument
                     : _failJsonParse<String>(
                         'executableArguments', argument, jsonText)
-            ],
+            ]),
       lineTerminator: _getJsonProperty<String>(
           jsonObject, json_key.lineTerminator, jsonText),
       localeName:
@@ -459,10 +499,11 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   factory FakeNativePlatform.from(NativePlatform platform) =>
       platform is FakeNativePlatform // Values may be unset.
           ? platform.copyWith()
-          : FakeNativePlatform(
-              environment: <String, String>{...platform.environment},
+          : FakeNativePlatform._(
+              environment: Map.unmodifiable(platform.environment),
               executable: platform.executable,
-              executableArguments: List.of(platform.executableArguments),
+              executableArguments:
+                  List.unmodifiable(platform.executableArguments),
               lineTerminator: platform.lineTerminator,
               localeName: platform.localeName,
               localHostname: platform.localHostname,
@@ -477,6 +518,13 @@ final class FakeNativePlatform extends NativePlatformTestBase {
               stdoutSupportsAnsi: platform.stdoutSupportsAnsi,
               version: platform.version,
             );
+
+  /// Legacy constructor name.
+  ///
+  /// Use [FakeNativePlatform.from] instead.
+  @Deprecated('Use FakeNativePlatform.from instead')
+  factory FakeNativePlatform.fromPlatform(NativePlatform platform) =
+      FakeNativePlatform.from;
 
   /// Whether the operating system is Android.
   @override
@@ -583,12 +631,14 @@ final class FakeNativePlatform extends NativePlatformTestBase {
     bool? stdoutSupportsAnsi,
     String? version,
   }) {
-    return FakeNativePlatform(
-      environment: environment ??
-          (_environment == null ? null : <String, String>{..._environment}),
+    return FakeNativePlatform._(
+      environment: environment != null
+          ? Map<String, String>.unmodifiable(environment)
+          : _environment,
       executable: executable ?? _executable,
-      executableArguments:
-          (executableArguments ?? _executableArguments)?.toList(),
+      executableArguments: executableArguments != null
+          ? List<String>.unmodifiable(executableArguments)
+          : executableArguments,
       lineTerminator: lineTerminator ?? _lineTerminator,
       localeName: localeName ?? _localeName,
       localHostname: localHostname ?? _localHostname,
@@ -607,10 +657,10 @@ final class FakeNativePlatform extends NativePlatformTestBase {
 
   /// Runs [fakePlatformCode] with this native platform as current platform.
   ///
-  /// If [fakePlatformCode] reads [Platform.current], it gets a platform object
-  /// whose [Platform.nativePlatform] is this fake native platform.
+  /// If [fakePlatformCode] reads [HostPlatform.current], it gets a platform
+  /// object whose [HostPlatform.nativePlatform] is this fake native platform.
   R run<R>(R Function() fakePlatformCode) => overrides.runWith(
-      fakePlatformCode, FakePlatform._native(this), _OverrideMarker.marker);
+      fakePlatformCode, FakeHostPlatform._native(this), _OverrideMarker.marker);
 
   /// Wraps [withOverride] to run it with this fake native platform as current.
   ///
@@ -625,6 +675,7 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   /// Can be parsed back by [FakeNativePlatform.fromJson].
   @override
   String toJson() {
+    // TODO: When nullable elements are introduced, use them here.
     return const JsonEncoder.withIndent('  ').convert(<String, dynamic>{
       if (_environment != null) json_key.environment: _environment,
       if (_executable != null) json_key.executable: _executable,
@@ -652,11 +703,6 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   }
 }
 
-/// Reports a failure to parse a JSON property at its expected type.
-Never _failJsonParse<T>(String property, Object? value, String? source) {
-  throw FormatException('Property "$property" is not a $T: $value', source);
-}
-
 /// Reads a property from a JSON map, and throws if it has the wrong type.
 ///
 /// Reads the [property] key from the [jsonMap] and returns the value,
@@ -670,6 +716,11 @@ T? _getJsonProperty<T extends Object>(
   var value = jsonMap[property];
   if (value is T?) return value;
   _failJsonParse<T>(property, value, source);
+}
+
+/// Reports a failure to parse a JSON property at its expected type.
+Never _failJsonParse<T>(String property, Object? value, String? source) {
+  throw FormatException('Property "$property" is not a $T: $value', source);
 }
 
 /// Throws if [value] is `null`, otherwise returns it.
@@ -692,16 +743,3 @@ Map<String, String> _caseInsensitiveMap() => HashMap<String, String>(
     equals: (String a, String b) =>
         a == b || a.toLowerCase() == b.toLowerCase(),
     hashCode: (String a) => a.toLowerCase().hashCode);
-
-/// Temporary name for [FakePlatform] to avoid name conflict.
-///
-/// Rename any reference to [FakePlatform] after importing *only*
-/// `testing.dart`, not also `platform.dart`.
-///
-/// Since the legacy class `FakePlatform`, corresponding to the new
-/// [FakeNativePlatform], has the same name as the new [FakePlatform],
-/// both are available by an aliased name to allow migration.
-///
-/// When the legacy declarations are removed, this type alias will
-/// be deprecated too
-typedef FakePlatformMigrationHelper = FakePlatform;

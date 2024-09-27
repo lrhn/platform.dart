@@ -4,6 +4,8 @@
 
 /// Implementation of the *current* platform,
 /// and abstract interfaces for the rest.
+///
+/// Provides all types needed by the implementation.
 library;
 
 export 'platform_specific/platform_unknown_impl.dart'
@@ -12,7 +14,8 @@ export 'platform_specific/platform_unknown_impl.dart'
     show
         BrowserPlatform,
         BrowserPlatformTestBase,
+        HostPlatform,
+        HostPlatformTestBase,
         NativePlatform,
         NativePlatformTestBase,
-        Platform,
-        PlatformTestBase;
+        nativePlatformInstance;

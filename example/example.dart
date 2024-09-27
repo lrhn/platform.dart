@@ -5,8 +5,8 @@
 import 'package:platform/platform.dart';
 
 void main(List<String> arguments) {
-  switch (Platform.current) {
-    case Platform(nativePlatform: var platform?):
+  switch (HostPlatform.current) {
+    case HostPlatform(nativePlatform: var platform?):
       print('Operating System: ${platform.operatingSystem}.');
       print('Local Hostname: ${platform.localHostname}.');
       print('Number of Processors: ${platform.numberOfProcessors}.');
@@ -16,7 +16,7 @@ void main(List<String> arguments) {
       print('Stdout Supports ANSI: ${yn(platform.stdoutSupportsAnsi)}.');
       print('Executable Arguments: ${platform.executableArguments}.');
       print('Dart Version: ${platform.version}.');
-    case Platform(browserPlatform: var platform?):
+    case HostPlatform(browserPlatform: var platform?):
       print('User-Agent: ${platform.userAgent}.');
       print('Version: ${platform.version}.');
   }

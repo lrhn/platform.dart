@@ -25,15 +25,15 @@ void main() {
           : 'unknown';
   print('Expected platform: $expectedPlatform');
 
-  switch (Platform.current) {
-    case Platform(:var browserPlatform?):
+  switch (HostPlatform.current) {
+    case HostPlatform(:var browserPlatform?):
       print('RUNNING IN A BROWSER');
       print('User-agent: ${browserPlatform.userAgent}');
-    case Platform(:var nativePlatform?) when nativePlatform.isLinux:
+    case HostPlatform(:var nativePlatform?) when nativePlatform.isLinux:
       print('RUNNING ON LINUX');
-    case Platform(:var nativePlatform?) when nativePlatform.isMacOS:
+    case HostPlatform(:var nativePlatform?) when nativePlatform.isMacOS:
       print('RUNNING ON MACOS');
-    case Platform(:var nativePlatform?) when nativePlatform.isWindows:
+    case HostPlatform(:var nativePlatform?) when nativePlatform.isWindows:
       print('RUNNING ON WINDOWS');
   }
 }

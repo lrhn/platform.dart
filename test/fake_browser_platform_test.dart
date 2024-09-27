@@ -19,7 +19,7 @@ void main() {
 
   test('Is compiled on browser', () {
     expect(original, isNotNull);
-    expect(Platform.current.browserPlatform, same(original));
+    expect(HostPlatform.current.browserPlatform, same(original));
   });
 
   if (original == null) return; // Promote to non-null from here.
@@ -136,7 +136,7 @@ void main() {
       expect(fake.userAgent, fakeUA);
       fake.run(() {
         expect(BrowserPlatform.current, same(fake));
-        expect(Platform.current.browserPlatform, same(fake));
+        expect(HostPlatform.current.browserPlatform, same(fake));
         expect(BrowserPlatform.current?.userAgent, fakeUA);
         expect(BrowserPlatform.current?.version, original.version);
       });
@@ -149,19 +149,19 @@ void main() {
       var asyncTesting = fake.run(() async {
         // Runs synchronously.
         expect(BrowserPlatform.current, same(fake));
-        expect(Platform.current.browserPlatform, same(fake));
+        expect(HostPlatform.current.browserPlatform, same(fake));
         expect(BrowserPlatform.current?.userAgent, fakeUA);
         parts++;
         await Future(() {}); // Timer-delay.
         // Fake platform is still current after async gap.
         expect(BrowserPlatform.current, same(fake));
-        expect(Platform.current.browserPlatform, same(fake));
+        expect(HostPlatform.current.browserPlatform, same(fake));
         expect(BrowserPlatform.current?.userAgent, fakeUA);
         parts++;
       });
       expect(parts, 1);
       expect(BrowserPlatform.current, same(original));
-      expect(Platform.current.browserPlatform, same(original));
+      expect(HostPlatform.current.browserPlatform, same(original));
       expect(BrowserPlatform.current?.userAgent, original.userAgent);
       await asyncTesting;
       expect(parts, 2);
@@ -175,18 +175,18 @@ void main() {
     test('sync', () {
       fakeNative.run(() {
         expect(BrowserPlatform.current, same(fakeNative));
-        expect(Platform.current.browserPlatform, same(fakeNative));
+        expect(HostPlatform.current.browserPlatform, same(fakeNative));
         expect(BrowserPlatform.current?.userAgent, fakeUA);
         expect(BrowserPlatform.current?.version, original.version);
         fakeNative2.run(() {
           expect(BrowserPlatform.current, same(fakeNative2));
-          expect(Platform.current.browserPlatform, same(fakeNative2));
+          expect(HostPlatform.current.browserPlatform, same(fakeNative2));
           expect(BrowserPlatform.current?.userAgent, fakeUA);
           expect(BrowserPlatform.current?.version, fakeVersion);
         });
         // Previous override restored when done.
         expect(BrowserPlatform.current, same(fakeNative));
-        expect(Platform.current.browserPlatform, same(fakeNative));
+        expect(HostPlatform.current.browserPlatform, same(fakeNative));
         expect(BrowserPlatform.current?.userAgent, fakeUA);
         expect(BrowserPlatform.current?.version, original.version);
       });
@@ -194,19 +194,19 @@ void main() {
     test('async', () async {
       await fakeNative.run(() async {
         expect(BrowserPlatform.current, same(fakeNative));
-        expect(Platform.current.browserPlatform, same(fakeNative));
+        expect(HostPlatform.current.browserPlatform, same(fakeNative));
         expect(BrowserPlatform.current?.userAgent, fakeUA);
         expect(BrowserPlatform.current?.version, original.version);
         var parts = 0;
         var asyncTesting = fakeNative2.run(() async {
           expect(BrowserPlatform.current, same(fakeNative2));
-          expect(Platform.current.browserPlatform, same(fakeNative2));
+          expect(HostPlatform.current.browserPlatform, same(fakeNative2));
           expect(BrowserPlatform.current?.userAgent, fakeUA);
           expect(BrowserPlatform.current?.version, fakeVersion);
           parts++;
           await Future(() {});
           expect(BrowserPlatform.current, same(fakeNative2));
-          expect(Platform.current.browserPlatform, same(fakeNative2));
+          expect(HostPlatform.current.browserPlatform, same(fakeNative2));
           expect(BrowserPlatform.current?.userAgent, fakeUA);
           expect(BrowserPlatform.current?.version, fakeVersion);
           parts++;
@@ -214,7 +214,7 @@ void main() {
         expect(parts, 1);
         // Previous override restored when done.
         expect(BrowserPlatform.current, same(fakeNative));
-        expect(Platform.current.browserPlatform, same(fakeNative));
+        expect(HostPlatform.current.browserPlatform, same(fakeNative));
         expect(BrowserPlatform.current?.userAgent, fakeUA);
         expect(BrowserPlatform.current?.version, original.version);
         await asyncTesting;

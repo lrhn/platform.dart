@@ -11,7 +11,7 @@ void main() {
   const expectNative = bool.fromEnvironment('dart.library.io');
 
   test('uses expected platform', () {
-    var platform = Platform.current;
+    var platform = HostPlatform.current;
     expect(platform.isBrowser, expectBrowser);
     expect(platform.isNative, expectNative);
 

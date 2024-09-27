@@ -35,6 +35,7 @@ void main() {
 
     setUp(() {
       fake = FakePlatform();
+      // Reported as error because constructor throws in non-native platforms
       local = const LocalPlatform();
     });
 

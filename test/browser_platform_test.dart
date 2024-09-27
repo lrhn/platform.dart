@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 void main() {
   const isNative = bool.fromEnvironment('dart.library.io');
   const isBrowser = bool.fromEnvironment('dart.library.js_interop');
-  final platform = Platform.current;
+  final platform = HostPlatform.current;
   final browserPlatform = platform.browserPlatform;
 
   test('Running on browser', () {

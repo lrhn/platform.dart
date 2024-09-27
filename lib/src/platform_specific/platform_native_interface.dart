@@ -5,7 +5,7 @@
 /// Interface for a native platform with access to `dart:io`.
 library;
 
-import '../platforms_impl.dart' show Platform;
+import '../platforms_impl.dart' show HostPlatform;
 
 /// Properties of the native host platform and process.
 ///
@@ -17,16 +17,16 @@ import '../platforms_impl.dart' show Platform;
 abstract final class NativePlatform {
   /// The current native platform, if any.
   ///
-  /// Same as [Platform.current.nativePlatform][Platform.nativePlatform].
-  static NativePlatform? get current => Platform.current.nativePlatform;
+  /// Same as [`Platform.current.nativePlatform`](Platform.nativePlatform).
+  static NativePlatform? get current => HostPlatform.current.nativePlatform;
 
   /// The value of [operatingSystem] on Linux.
   ///
   /// Can be used, for example, in switch cases when switching on
   /// [operatingSystem].
   ///
-  /// To just check if the platform is Linux, use
-  /// [isLinux](HostPlatforms.isLinux).
+  /// To just check if the platform is, for example Linux, use [isLinux] or
+  /// the shorthand [`Platform.current.isLinux`](HostPlatforms.isLinux).
   static const String linux = 'linux';
 
   /// The value of [operatingSystem] on Windows.
@@ -207,4 +207,7 @@ abstract final class NativePlatform {
   String toJson();
 }
 
-abstract base class NativePlatformTestBase implements NativePlatform {}
+/// Allows testing mocks to implement final class.
+abstract base class NativePlatformTestBase implements NativePlatform {
+  const NativePlatformTestBase();
+}

@@ -6,37 +6,33 @@
 
 /// Properties of the current platform.
 ///
-/// The [Platform.current] object represents the current runtime platform
-/// by having one of [Platform.nativePlatform] or [Platform.browserPlatform]
-/// being non-`null`, depending on the runtime system the current program is
+/// The [HostPlatform.current] object represents the current runtime platform
+/// with at most one of [HostPlatform.nativePlatform] or
+/// [HostPlatform.browserPlatform] being non-`null`.
+/// Which one is non-`null` depends on the runtime system the current program is
 /// running on.
 ///
-/// That value can provide more information about the current native
+/// That non-`null` value can provide more information about the current native
 /// or browser platform, respectively.
 ///
 /// [!NOTE]
-/// This library currently provides deprecated legacy [LocalPlatform]
-/// and [FakePlatform] classes, and exposes deprecated members on the
-/// [Platform] interface.
-/// Code using those deprecated members or the class [LocalPlatform] should use
-/// [Platform.current.nativePlatform][Platform.nativePlatform] instead.
+/// This library currently provides deprecated legacy [Platform],
+/// [LocalPlatform] and [FakePlatform] types, which only gives access to
+/// native platform information.
+/// Code using those types should use [NativePlatform] instead of [Platform],
+/// use [`Platform.current.nativePlatform`](Platform.nativePlatform) to access
+/// an instance instead of creating a [LocalPlatform].
 /// Code using [FakePlatform] should import `package:platform/testing.dart`
-/// and use `FakeNativePlatform` instead.
-/// Be aware that `package:platform/testing.dart` exposes a
-/// *different* class named `FakePlatform`, so using the two libraries
-/// together requires hiding `FakePlatform` from `testing.dart`
-/// until all legacy [FakePlatform] uses have been removed.
-/// The legacy [FakePlatform] is also available as [LegacyFakePlatform].
+/// and use [FakeNativePlatform] instead.
 ///
-/// @docImport 'src/legacy_implementation/legacy_classes.dart';
+/// @docImport 'src/legacy_implementation/legacy_platform.dart';
 /// @docImport 'src/platforms.dart';
+/// @docImport 'testing.dart';
 library;
 
-// Legacy classes, `LocalPlatform` and `FakePlatform`
-// (not the same as `FakePlatform` from `testing.dart`).
-// The `FakePlatform` from here is an alias for `LegacyFakePlatform`.
-export 'src/legacy_implementation/legacy_classes.dart'
-    show FakePlatform, LegacyFakePlatform, LocalPlatform;
+// Legacy classes implemented as type aliases and extension types.
+export 'src/legacy_implementation/legacy_platform.dart'
+    show FakePlatform, LocalPlatform, Platform;
 
 export 'src/platforms.dart'
-    show BrowserPlatform, NativePlatform, Platform, PlatformIsOS;
+    show BrowserPlatform, HostPlatform, NativePlatform, PlatformIsOS;
