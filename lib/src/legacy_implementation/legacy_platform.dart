@@ -8,7 +8,7 @@
 import 'package:meta/meta.dart';
 
 import '../platforms_impl.dart';
-import '../testing/fake_platforms.dart' show FakeNativePlatform;
+import '../testing/fake_native_platform.dart' show FakeNativePlatform;
 export 'legacy_local_platform_non_native.dart'
     if (dart.library.io) 'legacy_local_platform_native.dart';
 
@@ -22,4 +22,6 @@ typedef Platform = NativePlatform;
 ///
 /// Import `package:platform/testing.dart` and use [FakeNativePlatform] instead.
 @visibleForTesting
+@Deprecated(
+    'Use FakeNativePlatform from \'package:platform/testing.dart\' instead')
 typedef FakePlatform = FakeNativePlatform;

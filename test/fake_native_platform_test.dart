@@ -29,7 +29,7 @@ void main() {
   final otherVersion = original.operatingSystemVersion == '42' ? '87' : '42';
 
   group('FakeNativePlatform', () {
-    group('fromPlatform', () {
+    group('from', () {
       test('copiesAllProperties', () {
         var fake = FakeNativePlatform.from(original);
         testNativeFake(
@@ -353,6 +353,85 @@ void main() {
       });
     });
   });
+  group('Case insensitive on Windows,', () {
+    test('FakeNativePlatform.new', () {
+      var platform = FakeNativePlatform(
+          environment: {'a': 'a', 'A': 'A', 'B': 'B'},
+          operatingSystem: NativePlatform.windows);
+      expect(platform.environment, {'a': 'A', 'B': 'B'});
+      testCaseInsensitive(platform.environment);
+
+      platform =
+          FakeNativePlatform(environment: {'a': 'a', 'A': 'A', 'B': 'B'});
+      expect(platform.environment, {'a': 'a', 'A': 'A', 'B': 'B'});
+      testCaseSensitive(platform.environment);
+
+      platform = FakeNativePlatform(
+          environment: {'a': 'a', 'A': 'A', 'B': 'B'},
+          operatingSystem: NativePlatform.linux);
+      expect(platform.environment, {'a': 'a', 'A': 'A', 'B': 'B'});
+      testCaseSensitive(platform.environment);
+    });
+
+    test('FakeNativePlatform.from', () {
+      var platform = FakeNativePlatform(
+          environment: {'a': 'a', 'A': 'A', 'B': 'B'},
+          operatingSystem: NativePlatform.windows);
+      platform = FakeNativePlatform.from(platform);
+      testCaseInsensitive(platform.environment);
+
+      platform =
+          FakeNativePlatform(environment: {'a': 'a', 'A': 'A', 'B': 'B'});
+      platform = FakeNativePlatform.from(platform);
+      testCaseSensitive(platform.environment);
+    });
+
+    test('FakeNativePlatform.fromJson', () {
+      var windowsPlatform = FakeNativePlatform.fromJson('{'
+          '  "${json_key.environment}": {"a": "a", "A": "A", "B": "B"},'
+          '  "${json_key.operatingSystem}": "windows"'
+          '}');
+      expect(windowsPlatform.environment.length, 2);
+      testCaseInsensitive(windowsPlatform.environment);
+
+      var nonWindowsPlatform = FakeNativePlatform.fromJson('{'
+          '  "${json_key.environment}": {"a": "a", "A": "A", "B": "B"},'
+          '  "${json_key.operatingSystem}": "linux"'
+          '}');
+      expect(nonWindowsPlatform.environment.length, 3);
+      testCaseSensitive(nonWindowsPlatform.environment);
+    });
+
+    test('.copyWith', () {
+      var platform = FakeNativePlatform(
+          environment: {'a': 'a', 'A': 'A', 'B': 'B'},
+          operatingSystem: NativePlatform.windows);
+      expect(platform.environment, {'a': 'A', 'B': 'B'});
+      platform = platform.copyWith();
+      testCaseInsensitive(platform.environment);
+      platform = platform.copyWith(operatingSystem: NativePlatform.linux);
+      testCaseSensitive(platform.environment);
+
+      platform = FakeNativePlatform(
+          environment: {'a': 'a', 'A': 'A', 'B': 'B'},
+          operatingSystem: NativePlatform.linux);
+      platform = platform.copyWith();
+      testCaseSensitive(platform.environment);
+      platform = platform.copyWith(operatingSystem: NativePlatform.windows);
+      testCaseInsensitive(platform.environment);
+    });
+
+    test('FakeNativePlatform.from(nonFake)', () {
+      if (original.isWindows) {
+        testCaseInsensitive(original.environment, mutate: false);
+        var fakePlatform = FakeNativePlatform.from(original);
+        testCaseInsensitive(fakePlatform.environment, mutate: false);
+      } else {
+        var fakePlatform = FakeNativePlatform.from(original);
+        testCaseSensitive(fakePlatform.environment);
+      }
+    });
+  });
 }
 
 /// Checks that the operation `read()` throws if `expected` is `null`,
@@ -423,4 +502,74 @@ void testNativeFake(
   _testProperty(() => actual.stdoutSupportsAnsi,
       expectedValues[json_key.stdoutSupportsAnsi]);
   _testProperty(() => actual.version, expectedValues[json_key.version]);
+}
+
+void testCaseInsensitive(Map<String, String> environment,
+    {bool mutate = true}) {
+  for (var key in environment.keys) {
+    var value = environment[key];
+    var lowerKey = key.toLowerCase();
+    if (lowerKey != key) {
+      expect(environment[lowerKey], value,
+          reason: 'env["$lowerKey"] vs env["$key"]');
+    }
+    var upperKey = key.toUpperCase();
+    if (upperKey != key) {
+      expect(environment[upperKey], value,
+          reason: 'env["$upperKey"] vs env["$key"]');
+    }
+  }
+  if (!mutate) return;
+  var freshKey = _freshKey(environment);
+  expect(environment[freshKey], null);
+  expect(environment[freshKey.toLowerCase()], null);
+  expect(environment[freshKey.toUpperCase()], null);
+
+  var nonce = 'Nonce';
+  environment[freshKey] = nonce;
+  expect(environment[freshKey], nonce);
+  expect(environment[freshKey.toLowerCase()], nonce);
+  expect(environment[freshKey.toUpperCase()], nonce);
+
+  expect(environment.remove(freshKey.toUpperCase()), nonce);
+  expect(environment[freshKey], null);
+  expect(environment[freshKey.toLowerCase()], null);
+  expect(environment[freshKey.toUpperCase()], null);
+}
+
+void testCaseSensitive(Map<String, String> environment) {
+  var freshKey = _freshKey(environment);
+
+  expect(environment[freshKey], null);
+  expect(environment[freshKey.toLowerCase()], null);
+  expect(environment[freshKey.toUpperCase()], null);
+
+  var nonce = 'Nonce';
+  environment[freshKey] = nonce;
+  expect(environment[freshKey], nonce);
+  expect(environment[freshKey.toLowerCase()], null);
+  expect(environment[freshKey.toUpperCase()], null);
+
+  expect(environment.remove(freshKey.toUpperCase()), null);
+  expect(environment.remove(freshKey.toLowerCase()), null);
+  expect(environment[freshKey], nonce);
+  expect(environment[freshKey.toLowerCase()], null);
+  expect(environment[freshKey.toUpperCase()], null);
+
+  expect(environment.remove(freshKey), nonce);
+  expect(environment[freshKey], null);
+  expect(environment[freshKey.toLowerCase()], null);
+  expect(environment[freshKey.toUpperCase()], null);
+}
+
+String _freshKey(Map<String, Object?> map) {
+  for (var i = 0; i < 10000; i++) {
+    var key = 'aA.$i';
+    if (!map.containsKey(key) &&
+        !map.containsKey('AA.$i') &&
+        !map.containsKey('aa.$i')) {
+      return key;
+    }
+  }
+  fail('Unable to find fresh key for map: $map');
 }

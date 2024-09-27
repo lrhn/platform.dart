@@ -28,7 +28,11 @@ library;
 import 'package:meta/meta.dart' show visibleForTesting;
 
 export 'src/platforms.dart'
-    show BrowserPlatform, NativePlatform, HostPlatform, PlatformIsOS;
+    show BrowserPlatform, HostPlatform, NativePlatform, PlatformIsOS;
 
 export 'src/testing/fake_platforms.dart'
-    show FakeBrowserPlatform, FakeNativePlatform, FakeHostPlatform;
+    show
+        FakeBrowserPlatform,
+        FakeHostPlatform,
+        FakeNativePlatform,
+        RunFakeNativePlatform;

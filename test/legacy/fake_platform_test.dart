@@ -7,8 +7,6 @@
 @OnPlatform({'browser': Skip('Native-only functionality')})
 library;
 
-import 'dart:io' as io;
-
 import 'package:platform/platform.dart';
 import 'package:test/test.dart';
 
@@ -125,7 +123,7 @@ void main() {
 
     group('json', () {
       test('fromJson', () {
-        final json = io.File('test/legacy/platform.json').readAsStringSync();
+        final json = sampleJson;
         fake = FakePlatform.fromJson(json);
         expect(fake.numberOfProcessors, 8);
         expect(fake.pathSeparator, '/');
@@ -169,3 +167,26 @@ void main() {
     expect(() => platform.localeName, throwsA(isStateError));
   });
 }
+
+const String sampleJson = r'''
+{
+  "numberOfProcessors": 8,
+  "pathSeparator": "/",
+  "operatingSystem": "macos",
+  "operatingSystemVersion": "10.14.5",
+  "localHostname": "platform.test.org",
+  "environment": {
+    "PATH": "/bin",
+    "PWD": "/platform"
+  },
+  "executable": "/bin/dart",
+  "resolvedExecutable": "/bin/dart",
+  "script": "file:///platform/test/fake_platform_test.dart",
+  "executableArguments": [
+    "--checked"
+  ],
+  "packageConfig": null,
+  "version": "1.22.0",
+  "localeName": "de/de"
+}
+''';

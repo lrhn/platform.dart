@@ -93,4 +93,24 @@ void main() {
     expect(nativePlatform.isMacOS, os == NativePlatform.macOS);
     expect(nativePlatform.isWindows, os == NativePlatform.windows);
   });
+
+  if (nativePlatform.isWindows) {
+    // Environment is case-insensitive on Windows.
+    test('Case insensitive Windows environment', () {
+      var environment = nativePlatform.environment;
+      for (var key in environment.keys) {
+        var value = environment[key];
+        var lowerKey = key.toLowerCase();
+        if (lowerKey != key) {
+          expect(environment[lowerKey], value,
+              reason: 'env["$lowerKey"] vs env["$key"]');
+        }
+        var upperKey = key.toUpperCase();
+        if (upperKey != key) {
+          expect(environment[upperKey], value,
+              reason: 'env["$upperKey"] vs env["$key"]');
+        }
+      }
+    });
+  }
 }
